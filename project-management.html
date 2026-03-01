@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>らくあ様 × 加藤 | AI化PJ 進行管理ダッシュボード</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .status-done   { background: #dcfce7; color: #166534; border-color: #86efac; }
+        .status-wip    { background: #dbeafe; color: #1e40af; border-color: #93c5fd; }
+        .status-review { background: #fef9c3; color: #854d0e; border-color: #fde047; }
+        .status-plan   { background: #f3f4f6; color: #374151; border-color: #d1d5db; }
+
+        .phase-line::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 32px;
+            bottom: -8px;
+            width: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+
+        .task-card {
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .task-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+
+        .progress-bar {
+            transition: width 0.8s ease;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .pulse-dot { animation: pulse-dot 1.5s ease-in-out infinite; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- ヘッダー -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-teal-600 text-white p-2 rounded-lg">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-900 leading-tight">らくあ様 AI化プロジェクト</h1>
+                    <p class="text-xs text-slate-500">担当: 加藤 ／ 2026年1月〜</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="bg-teal-50 text-teal-700 text-xs font-bold px-3 py-1 rounded-full border border-teal-200">
+                    Phase 2 進行中
+                </span>
+                <span id="today-date" class="text-xs text-slate-400 hidden md:block"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-6 space-y-8">
+
+        <!-- ヒーロー：ビジョン & 目標KPI -->
+        <section class="bg-gradient-to-br from-teal-700 to-teal-500 rounded-2xl p-8 text-white shadow-lg">
+            <p class="text-teal-200 text-xs font-bold uppercase tracking-widest mb-3">Project Vision</p>
+            <h2 class="text-2xl md:text-3xl font-bold leading-snug mb-2">
+                「勘と根性」の経営から、<br>データとAIの伴走経営へ。
+            </h2>
+            <p class="text-teal-100 text-sm leading-relaxed mt-3 max-w-xl">
+                事務作業を極限まで減らし、お客様への「まごころ」を最大化する変革の旅。
+            </p>
+            <div class="grid grid-cols-3 gap-4 mt-8">
+                <div class="bg-white/15 rounded-xl p-4 text-center backdrop-blur-sm">
+                    <div class="text-3xl font-bold">50%</div>
+                    <div class="text-xs text-teal-100 mt-1">削減</div>
+                    <div class="text-xs text-teal-200 mt-0.5">事務作業時間</div>
+                </div>
+                <div class="bg-white/15 rounded-xl p-4 text-center backdrop-blur-sm">
+                    <div class="text-3xl font-bold">UP⤴</div>
+                    <div class="text-xs text-teal-100 mt-1">向上</div>
+                    <div class="text-xs text-teal-200 mt-0.5">リピート率</div>
+                </div>
+                <div class="bg-white/15 rounded-xl p-4 text-center backdrop-blur-sm">
+                    <div class="text-3xl font-bold">Zero</div>
+                    <div class="text-xs text-teal-100 mt-1">達成</div>
+                    <div class="text-xs text-teal-200 mt-0.5">フォロー漏れ</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 業務改善とは何か -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-xl">💡</span>
+                <h2 class="font-bold text-lg text-slate-800">そもそも「業務改善」って何？</h2>
+            </div>
+            <p class="text-xs text-slate-400 mb-6">このプロジェクトを始める前に、まずここを定義しておきます。</p>
+
+            <div class="bg-teal-50 border border-teal-100 rounded-xl p-5 mb-6">
+                <p class="text-xs font-bold text-teal-600 uppercase tracking-wide mb-2">らくあにとっての業務改善とは</p>
+                <p class="text-slate-800 font-bold text-base leading-relaxed">
+                    「やらなきゃいけない仕事」を減らして、<br>「本当にやりたい仕事」を増やすこと
+                </p>
+                <p class="text-sm text-slate-500 mt-3 leading-relaxed">
+                    スピードアップや効率化が目的ではありません。<br>
+                    「空いた時間と心の余裕を、お客様と向き合うこと・次の一手を考えることに使う」のが目的です。
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-red-50 border border-red-100 rounded-xl p-5">
+                    <h3 class="font-bold text-sm text-red-700 mb-3">今まで時間をとられていたこと<span class="font-normal text-red-400 ml-1">（やらなきゃ）</span></h3>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-start gap-2"><span class="text-red-400 font-bold shrink-0">✗</span>施術後のカルテ入力（夜の残業）</li>
+                        <li class="flex items-start gap-2"><span class="text-red-400 font-bold shrink-0">✗</span>お客様へのリマインド・フォロー連絡</li>
+                        <li class="flex items-start gap-2"><span class="text-red-400 font-bold shrink-0">✗</span>「誰に何を送ったか」の管理・確認</li>
+                        <li class="flex items-start gap-2"><span class="text-red-400 font-bold shrink-0">✗</span>次回予約のタイミングを考える</li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 border border-green-100 rounded-xl p-5">
+                    <h3 class="font-bold text-sm text-green-700 mb-3">本当にやりたいこと<span class="font-normal text-green-500 ml-1">（やりたい）</span></h3>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li class="flex items-start gap-2"><span class="text-green-500 font-bold shrink-0">✓</span>お客様一人ひとりとじっくり向き合う施術・カウンセリング</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 font-bold shrink-0">✓</span>「次にどんな施策を打つか」戦略を考える時間</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 font-bold shrink-0">✓</span>技術を磨く・新しいメニューを考える</li>
+                        <li class="flex items-start gap-2"><span class="text-green-500 font-bold shrink-0">✓</span>定時に帰って、自分の時間・家族の時間</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- このプロジェクトが終わった頃の未来 -->
+        <section>
+            <h2 class="font-bold text-slate-700 mb-4 text-center">このプロジェクトが終わった頃、どんな未来になっているか</h2>
+            <div class="grid md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center task-card">
+                    <div class="text-4xl mb-3">🌙</div>
+                    <h3 class="font-bold text-slate-800 mb-2">夜は自分の時間</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">カルテ入力は施術の直後に音声1分で完了。帰宅後は好きなことができる。</p>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center task-card">
+                    <div class="text-4xl mb-3">💌</div>
+                    <h3 class="font-bold text-slate-800 mb-2">フォロー漏れがゼロ</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">AIが自動でリストアップ。「あの人、最近来てないな」が先手対応に変わる。</p>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 text-center task-card">
+                    <div class="text-4xl mb-3">📊</div>
+                    <h3 class="font-bold text-slate-800 mb-2">確信を持った経営判断</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">「なんとなく」ではなくデータで。何がリピートに効いているか、数字でわかる。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- プロジェクト推進チーム -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
+            <div class="flex items-center gap-2 mb-6">
+                <span class="text-xl">🤝</span>
+                <h2 class="font-bold text-lg text-slate-800">プロジェクト推進チーム</h2>
+            </div>
+            <p class="text-sm text-slate-500 mb-6 -mt-3">AIはあくまで「道具」です。成功の鍵は、明確な役割を持った2人のチームメンバーにあります。</p>
+            <div class="grid md:grid-cols-2 gap-5">
+                <div class="bg-teal-50 border border-teal-100 rounded-xl p-5 flex items-start gap-4">
+                    <div class="text-3xl shrink-0">🌱</div>
+                    <div>
+                        <p class="text-xs text-teal-600 font-bold mb-0.5">AIトレーナー / 現場責任者</p>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">多川さん</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">「AIに何を教えるか」の責任者。AIを使いながららくあの業務効率化と売上向上を図ります。現場の知見をAIに反映させ、実務に活かすキーパーソンです。</p>
+                    </div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 flex items-start gap-4">
+                    <div class="text-3xl shrink-0">🔧</div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold mb-0.5">伴走支援 / テクニカルサポート</p>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">加藤さん</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">プロジェクト全体の伴走支援を担当。GASを活用した自動化システムの構築やデータ分析の設計など、技術面かららくあの変革をサポートします。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ナレッジ集・リソース一覧 -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="text-lg">📚</span>
+                    <h2 class="font-bold text-slate-800">ナレッジ集・リソース一覧</h2>
+                </div>
+                <span class="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full">ファイル自動取得</span>
+            </div>
+            <div class="p-6 space-y-6">
+
+                <!-- 外部リンク -->
+                <div>
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">🔗 外部リソース</h3>
+                    <div class="grid md:grid-cols-2 gap-3" id="external-links-grid"></div>
+                </div>
+
+                <!-- ローカルファイル（カテゴリ別・自動取得） -->
+                <div id="local-files-root">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">📁 ドキュメント・ツール <span id="file-count" class="font-normal normal-case text-slate-300"></span></h3>
+                    <div id="local-files-grid" class="space-y-4">
+                        <p class="text-xs text-slate-400 animate-pulse">ファイルを読み込み中...</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- KPIサマリー -->
+        <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
+                <div class="text-3xl font-bold text-green-600">3</div>
+                <div class="text-xs text-slate-500 mt-1">完了タスク</div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
+                <div class="text-3xl font-bold text-blue-600">3</div>
+                <div class="text-xs text-slate-500 mt-1">進行中</div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
+                <div class="text-3xl font-bold text-slate-400">4</div>
+                <div class="text-xs text-slate-500 mt-1">予定</div>
+            </div>
+            <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
+                <div class="text-xs text-slate-500 mb-1">全体進捗</div>
+                <div class="w-full bg-slate-100 rounded-full h-3 mt-1">
+                    <div class="bg-teal-500 h-3 rounded-full progress-bar" style="width: 45%"></div>
+                </div>
+                <div class="text-xs font-bold text-teal-700 mt-1">45%</div>
+            </div>
+        </section>
+
+        <!-- フェーズ別タスクボード -->
+        <section>
+            <h2 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                <i class="fas fa-tasks text-teal-600"></i> タスク進行状況
+            </h2>
+
+            <div class="space-y-3" id="task-board">
+                <!-- JS で描画 -->
+            </div>
+        </section>
+
+        <!-- 2カラム: ネクストアクション & ミーティングログ -->
+        <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- ネクストアクション -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h2 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-bolt text-amber-500"></i> ネクストアクション
+                </h2>
+                <ul class="space-y-3" id="next-actions">
+                    <!-- JS で描画 -->
+                </ul>
+            </section>
+
+            <!-- ミーティングログ -->
+            <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h2 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                    <i class="fas fa-calendar-check text-teal-500"></i> ミーティングログ
+                </h2>
+                <ul class="space-y-3" id="meeting-log">
+                    <!-- JS で描画 -->
+                </ul>
+            </section>
+        </div>
+
+        <!-- クライアント情報サマリー -->
+        <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+            <h2 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
+                <i class="fas fa-store text-teal-600"></i> クライアント情報
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div class="bg-slate-50 rounded-lg p-3">
+                    <div class="text-xs text-slate-400 mb-1">所在地</div>
+                    <div class="font-semibold">香川県</div>
+                </div>
+                <div class="bg-slate-50 rounded-lg p-3">
+                    <div class="text-xs text-slate-400 mb-1">業態</div>
+                    <div class="font-semibold">整体 × 美容（シミケア）</div>
+                </div>
+                <div class="bg-slate-50 rounded-lg p-3">
+                    <div class="text-xs text-slate-400 mb-1">Instagram</div>
+                    <div class="font-semibold">約1万フォロワー</div>
+                </div>
+                <div class="bg-slate-50 rounded-lg p-3">
+                    <div class="text-xs text-slate-400 mb-1">課題</div>
+                    <div class="font-semibold text-xs">院長疲弊・新規獲得停滞</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 相談ログ記録エリア（手入力用） -->
+        <section class="bg-slate-50 border border-dashed border-slate-300 rounded-xl p-5">
+            <h2 class="font-bold text-slate-600 mb-3 flex items-center gap-2">
+                <i class="fas fa-pen text-slate-400"></i> 相談メモ（最新）
+            </h2>
+            <div class="bg-white rounded-lg border border-slate-200 p-4 text-sm text-slate-600 space-y-2">
+                <div class="flex gap-3">
+                    <span class="text-xs font-mono bg-teal-100 text-teal-700 px-2 py-0.5 rounded shrink-0">2026-02-24</span>
+                    <span>PLAUDを検討中。現在5名で電子カルテ運用。1ヶ月試験→2〜3ヶ月で本格分析の方針を提案。</span>
+                </div>
+                <div class="flex gap-3">
+                    <span class="text-xs font-mono bg-blue-100 text-blue-700 px-2 py-0.5 rounded shrink-0">2026-02-06</span>
+                    <span>打合せ実施。訪問神経マッサージ動画構成、AI使い分け（ChatGPT/Gemini）、予約自動化（Apps Script）、音声カルテ導入を協議。</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="max-w-5xl mx-auto px-4 py-4 text-center text-slate-400 text-xs mt-4">
+        <p>らくあ様 AI化PJ 管理ページ ／ 担当: 加藤 ／ Last updated: <span id="last-updated"></span></p>
+    </footer>
+
+    <script>
+        // --- 今日の日付 ---
+        const now = new Date();
+        const fmt = (d) => d.toLocaleDateString('ja-JP', { year:'numeric', month:'long', day:'numeric' });
+        document.getElementById('today-date').textContent = fmt(now);
+        document.getElementById('last-updated').textContent = fmt(now);
+
+        // --- タスクデータ ---
+        const tasks = [
+            // Phase 1 完了
+            {
+                phase: 'Phase 1 ： 基盤ツール整備',
+                phaseColor: 'text-green-700 bg-green-50 border-green-200',
+                items: [
+                    { name: 'Gemini 活用ガイド作成（スライド）', status: 'done', owner: '加藤', note: 'スライド完成・共有済み' },
+                    { name: 'NotebookLM 活用ガイド作成（スライド）', status: 'done', owner: '加藤', note: 'スライド完成・共有済み' },
+                    { name: '口コミ返信 Gem 設定ガイド', status: 'done', owner: '加藤', note: 'ガイド作成済み' },
+                ]
+            },
+            // Phase 2 進行中
+            {
+                phase: 'Phase 2 ： 業務効率化',
+                phaseColor: 'text-blue-700 bg-blue-50 border-blue-200',
+                items: [
+                    { name: '音声入力によるカルテ記入（電子カルテ × PLAUD）', status: 'wip', owner: '多川さん', note: '5名で1ヶ月試験運用中（2/24〜）' },
+                    { name: '録音機材選定（PLAUD / Shokz）', status: 'review', owner: '加藤 → らくあ', note: '提案済み・院長検討中' },
+                    { name: 'Instagram 集客動線設計（フォロワー→来店）', status: 'wip', owner: '両者', note: '投稿再開・LINEとの連携検討中' },
+                ]
+            },
+            // Phase 3 予定
+            {
+                phase: 'Phase 3 ： 自動化・集客強化',
+                phaseColor: 'text-slate-600 bg-slate-50 border-slate-200',
+                items: [
+                    { name: '再検査フォローアップ 自動化（Apps Script）', status: 'plan', owner: '加藤', note: '3ヶ月後の顧客に自動LINE送信' },
+                    { name: '予約管理 自動化（Google スプレッドシート連携）', status: 'plan', owner: '加藤', note: 'ホットペッパー・LINE予約を一元化' },
+                    { name: '訪問神経マッサージ 営業動画制作', status: 'plan', owner: '多川さん', note: 'ケアマネージャー向け・70秒+詳細版' },
+                    { name: 'ChatGPT → Gemini 移行（プロンプト整理）', status: 'plan', owner: '両者', note: 'これまでの情報をGeminiへ引き継ぎ' },
+                ]
+            }
+        ];
+
+        const statusLabel = {
+            done:   { label: '✅ 完了',   cls: 'status-done' },
+            wip:    { label: '🔵 進行中', cls: 'status-wip' },
+            review: { label: '🟡 確認待', cls: 'status-review' },
+            plan:   { label: '⬜ 予定',   cls: 'status-plan' },
+        };
+
+        // --- タスクボード描画 ---
+        function renderTasks() {
+            const board = document.getElementById('task-board');
+            board.innerHTML = tasks.map(phase => `
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="px-5 py-3 border-b border-slate-100 ${phase.phaseColor} border">
+                        <h3 class="font-bold text-sm">${phase.phase}</h3>
+                    </div>
+                    <div class="divide-y divide-slate-100">
+                        ${phase.items.map(item => `
+                            <div class="task-card px-5 py-3 flex flex-col sm:flex-row sm:items-center gap-2">
+                                <div class="flex-1">
+                                    <div class="font-medium text-sm text-slate-800">${item.name}</div>
+                                    <div class="text-xs text-slate-400 mt-0.5">${item.note}</div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="text-xs text-slate-400">${item.owner}</span>
+                                    <span class="text-xs font-semibold px-2.5 py-1 rounded-full border ${statusLabel[item.status].cls}">
+                                        ${statusLabel[item.status].label}
+                                    </span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- ネクストアクション ---
+        const nextActions = [
+            { priority: '高', text: '音声カルテ 1ヶ月試験の中間フィードバック確認', who: '多川さん', by: '3月中' },
+            { priority: '高', text: 'PLAUD or Shokz 購入判断', who: '多川さん', by: '3月上旬' },
+            { priority: '中', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '次回打合せまで' },
+            { priority: '中', text: '訪問神経マッサージ 動画撮影スケジュール確定', who: '多川さん', by: '3月末' },
+            { priority: '低', text: 'Gemini への ChatGPT 情報引き継ぎプロンプト作成', who: '加藤', by: '4月' },
+        ];
+
+        const priorityColor = { '高': 'bg-red-100 text-red-700', '中': 'bg-amber-100 text-amber-700', '低': 'bg-slate-100 text-slate-500' };
+
+        function renderNextActions() {
+            const el = document.getElementById('next-actions');
+            el.innerHTML = nextActions.map(a => `
+                <li class="flex items-start gap-3">
+                    <span class="text-xs font-bold px-1.5 py-0.5 rounded ${priorityColor[a.priority]} shrink-0 mt-0.5">${a.priority}</span>
+                    <div class="flex-1 text-sm">
+                        <div class="text-slate-700">${a.text}</div>
+                        <div class="text-xs text-slate-400">${a.who} ／ ${a.by}</div>
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        // --- ミーティングログ ---
+        const meetings = [
+            { date: '2026-02-06', summary: '打合せ②：動画制作・AI使い分け・予約自動化・音声カルテ', hasLink: true },
+            { date: '2026-01-26', summary: '顧客リスト共有・初回ヒアリング完了', hasLink: false },
+        ];
+
+        function renderMeetings() {
+            const el = document.getElementById('meeting-log');
+            el.innerHTML = meetings.map(m => `
+                <li class="flex items-start gap-3">
+                    <span class="text-xs font-mono bg-slate-100 text-slate-500 px-2 py-1 rounded shrink-0">${m.date}</span>
+                    <div class="text-sm text-slate-700 leading-snug">${m.summary}
+                        ${m.hasLink ? '<span class="ml-1 text-xs text-blue-500">[tldv記録あり]</span>' : ''}
+                    </div>
+                </li>
+            `).join('');
+        }
+
+        // --- ナレッジ集 ---
+
+        // 外部リンク（手動で追加）
+        const externalLinks = [
+            {
+                label: 'AI化PJ 提案スライド',
+                sub: 'Google スライド',
+                url: 'https://docs.google.com/presentation/d/1c6G3k75BrnAinWx5I8QjC6AhWAg-1PcaP1VHViDxzqA/edit',
+                icon: 'fa-file-powerpoint',
+                color: 'text-orange-500 bg-orange-50 border-orange-100'
+            },
+            {
+                label: '打合せ録画 2026-02-06',
+                sub: 'tldv（文字起こし付き）',
+                url: 'https://tldv.io/app/meetings/69855a48727e830013801aea/',
+                icon: 'fa-video',
+                color: 'text-purple-500 bg-purple-50 border-purple-100'
+            },
+        ];
+
+        // ファイル名 → 表示設定マッピング
+        const FILE_META = {
+            'PJ進行管理.html':                               { label: 'PJ管理ダッシュボード（このページ）',    cat: 'ダッシュボード', icon: 'fa-chart-line',     color: 'text-teal-600 bg-teal-50 border-teal-100' },
+            '活用ガイド集.html':                              { label: 'AI活用ガイド集（マニュアル）',          cat: 'ガイド',         icon: 'fa-book-open',     color: 'text-emerald-600 bg-emerald-50 border-emerald-100' },
+            '録音機材提案.html':                              { label: '録音機材 比較提案',                  cat: 'ダッシュボード', icon: 'fa-microphone',     color: 'text-blue-600 bg-blue-50 border-blue-100' },
+            'らくあAIPJサイト.md':                            { label: 'AI化PJ 戦略ロードマップ',            cat: 'ダッシュボード', icon: 'fa-road',           color: 'text-indigo-600 bg-indigo-50 border-indigo-100' },
+            'ラクアさん_Gemini活用ガイド_スライド原稿.md':    { label: 'Gemini活用ガイド（スライド原稿）',    cat: 'ガイド',         icon: 'fa-book-open',     color: 'text-violet-600 bg-violet-50 border-violet-100' },
+            'ラクアさん_口コミ返信Gem設定ガイド.md':          { label: '口コミ返信 Gem 設定ガイド',           cat: 'ガイド',         icon: 'fa-star',          color: 'text-amber-600 bg-amber-50 border-amber-100' },
+            'らくあさん相談ろぐ.md':                          { label: '相談ログ（全履歴）',                 cat: 'ログ・記録',     icon: 'fa-comments',      color: 'text-slate-600 bg-slate-50 border-slate-200' },
+            'ラクアさん打合せ20260206.md':                    { label: '打合せ記録 2026-02-06',              cat: 'ログ・記録',     icon: 'fa-calendar-check',color: 'text-slate-600 bg-slate-50 border-slate-200' },
+            'ラクアさん情報.md':                              { label: 'クライアント プロファイル',           cat: 'ドキュメント',   icon: 'fa-user-circle',   color: 'text-slate-600 bg-slate-50 border-slate-200' },
+        };
+        // ナレッジ集に表示しないファイル
+        const HIDDEN_FILES = new Set([
+            'ObsidianVault.code-workspace',
+            '顧客リスト20260126kato.xlsx',
+            'ラクアさん_Gemini活用ガイド_スライド作成スクリプト.js',
+            'ラクアさん_NotebookLM活用ガイド_スライド作成スクリプト.js',
+            '録音機材提案.md',
+        ]);
+
+        function renderExternalLinks() {
+            const grid = document.getElementById('external-links-grid');
+            grid.innerHTML = externalLinks.map(l => `
+                <a href="${l.url}" target="_blank" rel="noopener"
+                   class="flex items-center gap-3 p-3 rounded-xl border ${l.color} hover:opacity-80 transition-opacity">
+                    <i class="fas ${l.icon} text-lg w-6 text-center shrink-0"></i>
+                    <div class="min-w-0">
+                        <div class="font-semibold text-sm text-slate-800 truncate">${l.label}</div>
+                        <div class="text-xs text-slate-400">${l.sub}</div>
+                    </div>
+                    <i class="fas fa-external-link-alt text-xs text-slate-300 ml-auto shrink-0"></i>
+                </a>
+            `).join('');
+        }
+
+        function renderStaticFiles() {
+            const grid = document.getElementById('local-files-grid');
+            const countEl = document.getElementById('file-count');
+
+            // FILE_METAのキーを静的リストとして使用（fetch不要・どこでも動作）
+            const visibleFiles = Object.keys(FILE_META).filter(f => !HIDDEN_FILES.has(f));
+
+            // カテゴリ別に分類
+            const categories = {};
+            visibleFiles.forEach(filename => {
+                const meta = FILE_META[filename];
+                const cat = meta ? meta.cat : 'その他';
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push({ filename, meta });
+            });
+
+            const catOrder = ['ダッシュボード', 'ガイド', 'ログ・記録', 'ドキュメント', 'その他'];
+            const sorted = catOrder.filter(c => categories[c]).concat(
+                Object.keys(categories).filter(c => !catOrder.includes(c))
+            );
+
+            countEl.textContent = `（${visibleFiles.length}件）`;
+            grid.innerHTML = sorted.map(cat => `
+                <div>
+                    <p class="text-xs text-slate-400 font-semibold mb-2">${cat}</p>
+                    <div class="grid md:grid-cols-2 gap-2">
+                        ${categories[cat].map(({ filename, meta }) => {
+                            const label  = meta ? meta.label : filename;
+                            const icon   = meta ? meta.icon  : 'fa-file';
+                            const color  = meta ? meta.color : 'text-slate-500 bg-slate-50 border-slate-200';
+                            const isCurrent = filename === 'PJ進行管理.html';
+                            return `
+                            <a href="./${encodeURIComponent(filename)}" target="${isCurrent ? '_self' : '_blank'}"
+                               class="flex items-center gap-3 p-3 rounded-xl border ${color} hover:opacity-80 transition-opacity ${isCurrent ? 'opacity-50 cursor-default pointer-events-none' : ''}">
+                                <i class="fas ${icon} text-base w-5 text-center shrink-0"></i>
+                                <div class="min-w-0">
+                                    <div class="font-medium text-sm text-slate-800 leading-snug">${label}</div>
+                                    <div class="text-xs text-slate-400">${filename}</div>
+                                </div>
+                                ${isCurrent ? '' : '<i class="fas fa-arrow-up-right-from-square text-xs text-slate-300 ml-auto shrink-0"></i>'}
+                            </a>`;
+                        }).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- Init ---
+        renderTasks();
+        renderNextActions();
+        renderMeetings();
+        renderExternalLinks();
+        renderStaticFiles();
+    </script>
+</body>
+</html>

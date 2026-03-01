@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>らくあ 活用ガイド集 | AI業務改善マニュアル</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background: #f8fafc; }
+
+        .tab-btn { transition: all 0.2s; }
+        .tab-btn.active { background: white; color: #0f766e; border-bottom: 3px solid #0f766e; font-weight: 700; }
+        .tab-btn:not(.active) { color: #64748b; border-bottom: 3px solid transparent; }
+
+        .step-num {
+            width: 2rem; height: 2rem; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.875rem; flex-shrink: 0;
+        }
+
+        .copy-box {
+            background: #1e293b; color: #e2e8f0;
+            border-radius: 0.75rem; padding: 1rem 1rem 1rem 1.25rem;
+            font-size: 0.8rem; line-height: 1.6; white-space: pre-wrap;
+            word-break: break-all; position: relative;
+        }
+        .copy-btn {
+            position: absolute; top: 0.5rem; right: 0.5rem;
+            background: #334155; color: #94a3b8;
+            border: none; border-radius: 0.375rem;
+            padding: 0.25rem 0.6rem; font-size: 0.7rem; cursor: pointer;
+            transition: background 0.2s;
+        }
+        .copy-btn:hover { background: #475569; color: white; }
+        .copy-btn.copied { background: #059669; color: white; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .tip-box { border-left: 4px solid #0d9488; background: #f0fdfa; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0; }
+        .warn-box { border-left: 4px solid #f59e0b; background: #fffbeb; padding: 1rem; border-radius: 0 0.5rem 0.5rem 0; }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- ヘッダー -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-teal-600 text-white p-2 rounded-lg text-sm">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base text-slate-900 leading-tight">らくあ AI活用ガイド集</h1>
+                    <p class="text-xs text-slate-400">いつでも開いて使えるマニュアル</p>
+                </div>
+            </div>
+            <a href="./PJ%E9%80%B2%E8%A1%8C%E7%AE%A1%E7%90%86.html" class="text-xs text-teal-600 hover:underline hidden md:block">← PJ管理ページへ</a>
+        </div>
+
+        <!-- タブ -->
+        <div class="max-w-3xl mx-auto px-4 flex gap-1 overflow-x-auto border-t border-slate-100" id="tab-bar">
+            <button class="tab-btn active py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('gemini', this)">🤖 Gemini基本</button>
+            <button class="tab-btn py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('kuchikomi', this)">⭐ 口コミ返信</button>
+            <button class="tab-btn py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('karte', this)">🎤 音声カルテ</button>
+            <button class="tab-btn py-3 px-4 text-sm whitespace-nowrap" onclick="switchTab('data', this)">📊 顧客データ</button>
+        </div>
+    </header>
+
+    <main class="max-w-3xl mx-auto px-4 py-6">
+
+        <!-- ========== Tab: Gemini基本 ========== -->
+        <div id="panel-gemini" class="tab-panel active space-y-6">
+
+            <div class="bg-teal-600 text-white rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-1">🤖 Gemini 基本ガイド</h2>
+                <p class="text-teal-100 text-sm">ChatGPTとの使い分けと、うまく使うコツ</p>
+            </div>
+
+            <!-- 使い分け表 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="px-5 py-3 bg-slate-50 border-b border-slate-100">
+                    <h3 class="font-bold text-slate-700">GeminiとChatGPT、どっちを使う？</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-50 text-xs text-slate-500 uppercase">
+                            <tr>
+                                <th class="px-4 py-2 text-left">やること</th>
+                                <th class="px-4 py-2 text-center text-teal-600">Gemini</th>
+                                <th class="px-4 py-2 text-center text-green-600">ChatGPT</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3">口コミ返信（Gem）</td>
+                                <td class="px-4 py-3 text-center text-xl">⭐</td>
+                                <td class="px-4 py-3 text-center text-slate-300">△</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3">Instagram投稿文</td>
+                                <td class="px-4 py-3 text-center text-xl">◎</td>
+                                <td class="px-4 py-3 text-center">○</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3">Gmailの返信下書き</td>
+                                <td class="px-4 py-3 text-center text-xl">⭐</td>
+                                <td class="px-4 py-3 text-center text-slate-300">×</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3">最新トレンド調査</td>
+                                <td class="px-4 py-3 text-center text-xl">◎</td>
+                                <td class="px-4 py-3 text-center">△</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3">長めのブログ記事</td>
+                                <td class="px-4 py-3 text-center">○</td>
+                                <td class="px-4 py-3 text-center text-xl">◎</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3">キャッチコピー考案</td>
+                                <td class="px-4 py-3 text-center">○</td>
+                                <td class="px-4 py-3 text-center text-xl">◎</td>
+                            </tr>
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3">音声カルテのAI整形</td>
+                                <td class="px-4 py-3 text-center text-xl">◎</td>
+                                <td class="px-4 py-3 text-center">○</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="px-5 py-3 text-xs text-slate-400 bg-slate-50 border-t border-slate-100">⭐ = 特におすすめ　◎ = 得意　○ = 使える　△ = 不向き</p>
+            </div>
+
+            <!-- 使いこなしコツ -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-5">
+                <h3 class="font-bold text-slate-700">💡 うまく使うための4つのコツ</h3>
+
+                <div class="flex items-start gap-4">
+                    <div class="step-num bg-teal-100 text-teal-700">1</div>
+                    <div>
+                        <p class="font-semibold text-slate-800 mb-1">具体的に指示する</p>
+                        <p class="text-sm text-slate-500 mb-2">曖昧な指示だと曖昧な答えが返ってきます。</p>
+                        <div class="text-sm space-y-1">
+                            <div class="flex gap-2 items-start"><span class="text-red-400 font-bold shrink-0">✗</span><span class="text-slate-600">「口コミの返信を書いて」</span></div>
+                            <div class="flex gap-2 items-start"><span class="text-green-500 font-bold shrink-0">✓</span><span class="text-slate-600">「敬語で温かみのある返信を3パターン、長さを変えて書いて」</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="step-num bg-teal-100 text-teal-700">2</div>
+                    <div>
+                        <p class="font-semibold text-slate-800 mb-1">役割を与える</p>
+                        <p class="text-sm text-slate-500 mb-2">「〇〇として回答して」と伝えると一気に精度が上がります。</p>
+                        <div class="copy-box">あなたは香川県の整体院「らくあ」の院長として回答してください<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="step-num bg-teal-100 text-teal-700">3</div>
+                    <div>
+                        <p class="font-semibold text-slate-800 mb-1">フィードバックで調整する</p>
+                        <p class="text-sm text-slate-500 mb-2">最初の出力が100点でなくて大丈夫。会話で修正できます。</p>
+                        <div class="text-sm text-slate-600 space-y-1 bg-slate-50 rounded-lg p-3">
+                            <p>→「もう少し短くして」</p>
+                            <p>→「もっと柔らかい表現で」</p>
+                            <p>→「絵文字を1つだけにして」</p>
+                            <p>→「Aパターンだけ出して」</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4">
+                    <div class="step-num bg-teal-100 text-teal-700">4</div>
+                    <div>
+                        <p class="font-semibold text-slate-800 mb-1">Gem機能を使う（時短の本命）</p>
+                        <p class="text-sm text-slate-500">繰り返す作業はGemを作っておくと、毎回の指示が不要に。<br>口コミ返信Gemはすでに設定済みです！</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tip-box text-sm text-slate-700">
+                <strong>✅ まずやること：</strong> 口コミ返信Gemを1回使ってみましょう。「⭐ 口コミ返信」タブを開いてください。
+            </div>
+        </div>
+
+        <!-- ========== Tab: 口コミ返信 ========== -->
+        <div id="panel-kuchikomi" class="tab-panel space-y-6">
+
+            <div class="bg-amber-500 text-white rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-1">⭐ 口コミ返信ガイド</h2>
+                <p class="text-amber-100 text-sm">Gemを使って返信を3パターン自動生成する方法</p>
+            </div>
+
+            <!-- 初回設定 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4">【初回のみ】Gem の設定手順</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-amber-100 text-amber-700">1</div>
+                        <div>
+                            <p class="font-semibold text-slate-800">Gemini を開く</p>
+                            <a href="https://gemini.google.com" target="_blank" class="text-sm text-teal-600 underline">https://gemini.google.com</a>
+                            <p class="text-xs text-slate-400 mt-0.5">Googleアカウントでログイン</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-amber-100 text-amber-700">2</div>
+                        <div>
+                            <p class="font-semibold text-slate-800">「Gem マネージャー」→「新しいGemを作成」</p>
+                            <p class="text-xs text-slate-400 mt-0.5">左サイドバーにあります</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-amber-100 text-amber-700">3</div>
+                        <div>
+                            <p class="font-semibold text-slate-800 mb-2">名前を入力</p>
+                            <div class="copy-box">口コミ返信アシスタント<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-amber-100 text-amber-700">4</div>
+                        <div>
+                            <p class="font-semibold text-slate-800 mb-2">「指示」欄に以下を丸ごとコピペ</p>
+                            <div class="copy-box">あなたは香川県の「らくあ整体院」の院長として、ホットペッパービューティーの口コミへの返信を作成します。
+
+## キャラクター
+- 敬語ベースだが温かみのある文体
+- 絵文字は控えめに（1つの返信に1〜2個まで、🙏を基本に）
+- 押し売り感・営業感を出さない
+- 「根本改善」「継続サポート」を大切にする姿勢
+- 「お忙しい中」などの定型句は使わない
+
+## 入力形式
+口コミを貼り付ける際、以下も教えてください：
+- メニュー名（例：腰痛改善整体、産後骨盤矯正、シミケアなど）
+- 口コミのトーン（ポジティブ / 少し不満あり / ネガティブ）
+
+## 出力形式
+以下の3パターンを出力してください：
+
+---
+【A：共感たっぷりバージョン】8〜12行
+【B：シンプル丁寧バージョン】5〜7行
+【C：最低限バージョン】3行
+---
+
+## 注意
+- 定型文っぽくならないよう、お客様の言葉を必ず拾う
+- ネガティブ口コミは：謝罪→受け止め→改善約束。絵文字は🙏のみ<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-amber-100 text-amber-700">5</div>
+                        <div>
+                            <p class="font-semibold text-slate-800">右上「保存」をクリック ✅</p>
+                            <p class="text-xs text-slate-400 mt-0.5">これで初回設定は完了です！次回からは左サイドバーから開くだけ。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使い方 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4">【毎回の使い方】3ステップ</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-green-100 text-green-700">1</div>
+                        <div>
+                            <p class="font-semibold text-slate-800">Geminiを開き「口コミ返信アシスタント」を選ぶ</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-green-100 text-green-700">2</div>
+                        <div>
+                            <p class="font-semibold text-slate-800 mb-2">以下のフォーマットで送る</p>
+                            <div class="copy-box">【口コミ】
+（ホットペッパーの口コミをここにコピペ）
+
+【メニュー】
+（例：肩こり改善、産後骨盤矯正、シミケア）
+
+【トーン】
+ポジティブ<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-green-100 text-green-700">3</div>
+                        <div>
+                            <p class="font-semibold text-slate-800">A・B・Cの3パターンから好きなものをコピペして投稿</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 困ったとき -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-3">😅 こんな時は？</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                        <span class="font-bold text-slate-500 shrink-0">Q.</span>
+                        <div><p class="font-medium">文章が長すぎる / 短すぎる</p><p class="text-slate-500">→「もう少し短く」「もう少し長く」と追加で送る</p></div>
+                    </div>
+                    <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                        <span class="font-bold text-slate-500 shrink-0">Q.</span>
+                        <div><p class="font-medium">Aパターンだけほしい</p><p class="text-slate-500">→「Aだけ出して」と送る</p></div>
+                    </div>
+                    <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                        <span class="font-bold text-slate-500 shrink-0">Q.</span>
+                        <div><p class="font-medium">トーンを変えたい</p><p class="text-slate-500">→「もっと柔らかく」「もっとシンプルに」と送る</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== Tab: 音声カルテ ========== -->
+        <div id="panel-karte" class="tab-panel space-y-6">
+
+            <div class="bg-blue-600 text-white rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-1">🎤 音声カルテ入力ガイド</h2>
+                <p class="text-blue-100 text-sm">喋るだけでカルテが完成。夜の残業をゼロにする方法</p>
+            </div>
+
+            <!-- 全体の流れ -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4">全体の流れ（3ステップ）</h3>
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-3 text-sm text-center">
+                    <div class="flex-1 bg-blue-50 border border-blue-100 rounded-xl p-4">
+                        <div class="text-2xl mb-1">🎤</div>
+                        <div class="font-bold text-blue-700">STEP 1</div>
+                        <div class="text-slate-600 mt-1">施術直後に<br>音声入力でメモ</div>
+                    </div>
+                    <div class="text-slate-300 text-2xl hidden md:block">→</div>
+                    <div class="flex-1 bg-purple-50 border border-purple-100 rounded-xl p-4">
+                        <div class="text-2xl mb-1">📋</div>
+                        <div class="font-bold text-purple-700">STEP 2</div>
+                        <div class="text-slate-600 mt-1">文字をコピーして<br>GeminiへペーストI</div>
+                    </div>
+                    <div class="text-slate-300 text-2xl hidden md:block">→</div>
+                    <div class="flex-1 bg-green-50 border border-green-100 rounded-xl p-4">
+                        <div class="text-2xl mb-1">✅</div>
+                        <div class="font-bold text-green-700">STEP 3</div>
+                        <div class="text-slate-600 mt-1">整形されたカルテを<br>電子カルテに貼る</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 1 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4"><span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 1</span>音声入力の使い方（iPad）</h3>
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-blue-100 text-blue-700">1</div>
+                        <div>
+                            <p class="font-semibold text-slate-800">電子カルテまたはメモアプリを開く</p>
+                            <p class="text-xs text-slate-400">テキスト入力欄をタップして、キーボードを表示</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-blue-100 text-blue-700">2</div>
+                        <div>
+                            <p class="font-semibold text-slate-800">キーボード右下のマイクアイコン🎤をタップ</p>
+                            <p class="text-xs text-slate-400">「音声入力中...」と表示されたらOK</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-blue-100 text-blue-700">3</div>
+                        <div>
+                            <p class="font-semibold text-slate-800 mb-2">以下の項目を口で話す（1〜2分）</p>
+                            <div class="bg-slate-50 rounded-lg p-3 text-sm text-slate-600 space-y-1">
+                                <p>📌 患者さんのお名前 / 来院目的</p>
+                                <p>📌 今日の主訴・状態</p>
+                                <p>📌 施術した部位・内容</p>
+                                <p>📌 患者さんの反応・フィードバック</p>
+                                <p>📌 次回の施術方針・提案</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tip-box text-sm text-slate-700">
+                        <strong>💡 コツ：</strong> 誤変換は気にしない。「だいたい」→「大腿」になっても、GeminiがSTEP2で直してくれます。
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4"><span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 2</span>GeminiでAI整形</h3>
+                <p class="text-sm text-slate-500 mb-4">音声入力で書いた文章をコピーして、以下のプロンプトと一緒にGeminiに送ります。</p>
+                <div class="copy-box">以下の音声メモを、理学療法士・整体師のカルテとして適切な形式に整えてください。
+誤変換された専門用語（例：後輩菌→広背筋）も正しく直してください。
+箇条書きで、「主訴」「施術部位・内容」「患者反応」「次回方針」の4項目にまとめてください。
+
+【音声メモ】
+（ここに音声入力した文章をペースト）<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-3"><span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 3</span>電子カルテに貼り付けて完了</h3>
+                <p class="text-sm text-slate-500">Geminiが整形してくれたカルテをコピーして、電子カルテの所見欄に貼るだけです。</p>
+            </div>
+
+            <!-- iPad設定Tips -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-3">📱 iPad 音声入力の精度を上げる設定</h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                        <span class="text-blue-500 shrink-0">①</span>
+                        <div><p class="font-medium">自動句読点をオフにする</p><p class="text-slate-500">設定 → 一般 → キーボード → 音声入力 → 自動句読点：オフ</p></div>
+                    </div>
+                    <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                        <span class="text-blue-500 shrink-0">②</span>
+                        <div><p class="font-medium">よく使う専門用語を辞書登録</p><p class="text-slate-500">設定 → 一般 → キーボード → ユーザー辞書<br>例：「だいたい」→「大腿」／「ないせん」→「内旋」</p></div>
+                    </div>
+                    <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
+                        <span class="text-blue-500 shrink-0">③</span>
+                        <div><p class="font-medium">5GHz Wi-Fiに接続する</p><p class="text-slate-500">音声入力はネットを使います。2.4GHzより5GHzの方が安定します。</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warn-box text-sm text-slate-700">
+                <strong>📌 現在の状況：</strong> 5名の患者さんで1ヶ月間の試験運用中（2026年2月24日〜）。3月中に中間フィードバックを加藤に共有してください。
+            </div>
+        </div>
+
+        <!-- ========== Tab: 顧客データ ========== -->
+        <div id="panel-data" class="tab-panel space-y-6">
+
+            <div class="bg-gradient-to-br from-violet-700 to-violet-500 text-white rounded-2xl p-6">
+                <h2 class="text-xl font-bold mb-1">📊 顧客データ整理・分析ガイド</h2>
+                <p class="text-violet-100 text-sm">スプレッドシートのデータをAIで活かす。「なんとなく」から「根拠のある判断」へ。</p>
+            </div>
+
+            <!-- なぜデータ整理が大事か -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4">💡 まず、データ整理で何ができるようになる？</h3>
+                <div class="grid md:grid-cols-3 gap-3 text-sm text-center">
+                    <div class="bg-violet-50 border border-violet-100 rounded-xl p-4">
+                        <div class="text-2xl mb-2">🔍</div>
+                        <div class="font-bold text-slate-800 mb-1">フォロー漏れ防止</div>
+                        <div class="text-slate-500 text-xs">3ヶ月来ていない人を自動で見つけて、先手でLINEできる</div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-100 rounded-xl p-4">
+                        <div class="text-2xl mb-2">📈</div>
+                        <div class="font-bold text-slate-800 mb-1">リピート傾向の把握</div>
+                        <div class="text-slate-500 text-xs">何回目で離れるか・どのメニューが続くかがわかる</div>
+                    </div>
+                    <div class="bg-green-50 border border-green-100 rounded-xl p-4">
+                        <div class="text-2xl mb-2">💰</div>
+                        <div class="font-bold text-slate-800 mb-1">売上の見通し</div>
+                        <div class="text-slate-500 text-xs">来月来る可能性が高い人を把握して、稼働予測ができる</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 1: データ整形 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4">
+                    <span class="bg-violet-100 text-violet-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 1</span>
+                    スプレッドシートのデータを整える
+                </h3>
+                <p class="text-sm text-slate-500 mb-4">AIに読み込ませる前に、列の意味を揃えておくと精度が上がります。</p>
+
+                <div class="overflow-x-auto mb-4">
+                    <table class="w-full text-xs border border-slate-200 rounded-lg overflow-hidden">
+                        <thead class="bg-violet-50 text-violet-700 font-bold">
+                            <tr>
+                                <th class="px-3 py-2 text-left border-b border-slate-200">列名</th>
+                                <th class="px-3 py-2 text-left border-b border-slate-200">入力例</th>
+                                <th class="px-3 py-2 text-left border-b border-slate-200">ポイント</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 text-slate-600">
+                            <tr><td class="px-3 py-2 font-medium">氏名</td><td class="px-3 py-2">田中 花子</td><td class="px-3 py-2">フルネームで統一</td></tr>
+                            <tr><td class="px-3 py-2 font-medium">初回来院日</td><td class="px-3 py-2">2025/10/01</td><td class="px-3 py-2">YYYY/MM/DD形式で統一</td></tr>
+                            <tr><td class="px-3 py-2 font-medium">最終来院日</td><td class="px-3 py-2">2026/01/15</td><td class="px-3 py-2">毎回更新する</td></tr>
+                            <tr><td class="px-3 py-2 font-medium">来院回数</td><td class="px-3 py-2">5</td><td class="px-3 py-2">数字のみ</td></tr>
+                            <tr><td class="px-3 py-2 font-medium">主なメニュー</td><td class="px-3 py-2">腰痛整体</td><td class="px-3 py-2">メニュー名を統一する</td></tr>
+                            <tr><td class="px-3 py-2 font-medium">次回目安日</td><td class="px-3 py-2">2026/04/15</td><td class="px-3 py-2">最終来院日＋3ヶ月が目安</td></tr>
+                            <tr><td class="px-3 py-2 font-medium">状態</td><td class="px-3 py-2">継続 / 休眠 / 卒業</td><td class="px-3 py-2">3択で分類</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warn-box text-sm text-slate-700">
+                    <strong>📌 重要：</strong>「次回目安日」列があると、自動フォローアップ（Apps Script）に直接つながります。まずここを埋めることが最優先です。
+                </div>
+            </div>
+
+            <!-- STEP 2: AIで分析 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4">
+                    <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 2</span>
+                    GeminiにデータをペーストしてAI分析
+                </h3>
+                <p class="text-sm text-slate-500 mb-4">スプレッドシートの内容をコピーして、以下のプロンプトと一緒にGeminiへ送ります。</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-xs font-bold text-slate-500 mb-2">🔍 パターン①：フォロー対象者を抽出</p>
+                        <div class="copy-box">以下は整体院の顧客データです。
+「最終来院日」から90日以上経過している方を抽出してください。
+氏名・最終来院日・経過日数・主なメニューをリストアップし、
+フォロー優先度（高・中・低）も判断してください。
+
+【データ】
+（ここにスプレッドシートからコピーしたデータを貼り付け）<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-bold text-slate-500 mb-2">📈 パターン②：リピート傾向を分析</p>
+                        <div class="copy-box">以下は整体院の顧客データです。
+次の3点を分析してください：
+1. 来院回数ごとの人数分布（何回で離脱が多いか）
+2. メニュー別のリピート率の傾向
+3. リピーターに共通している特徴があれば教えてください
+
+【データ】
+（ここにスプレッドシートからコピーしたデータを貼り付け）<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-bold text-slate-500 mb-2">💰 パターン③：翌月の来院予測</p>
+                        <div class="copy-box">以下は整体院の顧客データです。
+「次回目安日」が来月（〇月）以内の方を抽出してください。
+氏名・次回目安日・メニュー・来院回数を一覧にしてください。
+また、この月の予想来院人数の合計も教えてください。
+
+【データ】
+（ここにスプレッドシートからコピーしたデータを貼り付け）<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3: フォローLINE文面 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4">
+                    <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 3</span>
+                    フォローLINEの文面をAIで作る
+                </h3>
+                <p class="text-sm text-slate-500 mb-3">抽出した対象者に送るLINEメッセージをGeminiに作らせます。</p>
+                <div class="copy-box">以下の情報をもとに、整体院からのフォローLINEメッセージを作成してください。
+
+【お客様情報】
+・氏名：〇〇様
+・最終来院日：〇年〇月〇日
+・主なメニュー：腰痛整体
+・来院回数：5回
+
+【文体の条件】
+- 押しつけがましくなく、気にかけている温かみのある文体
+- 「お体の調子はいかがですか」から始める
+- 予約の強制をしない。「お気軽にご連絡ください」で締める
+- 3〜5行程度、LINEらしい短さで<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+            </div>
+
+            <!-- 将来の自動化 -->
+            <div class="bg-violet-50 border border-violet-200 rounded-xl p-5">
+                <h3 class="font-bold text-violet-800 mb-3">🚀 次のステップ：自動化（Apps Script）</h3>
+                <p class="text-sm text-slate-600 mb-3">データ整理が進んだら、以下を自動化できます（加藤が実装予定）。</p>
+                <div class="space-y-2 text-sm">
+                    <div class="flex items-start gap-3">
+                        <span class="bg-violet-200 text-violet-700 font-bold text-xs px-2 py-0.5 rounded shrink-0 mt-0.5">予定①</span>
+                        <span class="text-slate-600">「次回目安日」が1週間以内の方を毎朝自動でリストアップ → メール通知</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-violet-200 text-violet-700 font-bold text-xs px-2 py-0.5 rounded shrink-0 mt-0.5">予定②</span>
+                        <span class="text-slate-600">90日以上未来院の方を自動抽出 → LINEフォロー文面を自動生成</span>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="bg-violet-200 text-violet-700 font-bold text-xs px-2 py-0.5 rounded shrink-0 mt-0.5">予定③</span>
+                        <span class="text-slate-600">月次レポート（来院数・リピート率・売上予測）を自動集計</span>
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3">※ まずSTEP1のデータ整形が完了してから実装に入ります</p>
+            </div>
+
+            <div class="tip-box text-sm text-slate-700">
+                <strong>✅ 今すぐできること：</strong>スプレッドシートに「次回目安日」列と「状態」列を追加して、既存データを埋め始めましょう。それだけで分析の土台ができます。
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="max-w-3xl mx-auto px-4 py-4 text-center text-slate-400 text-xs mt-4">
+        <p>らくあ AI活用ガイド集 ／ 担当: 加藤 ／ 2026年3月</p>
+    </footer>
+
+    <script>
+        function switchTab(id, btn) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('panel-' + id).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        function copyText(btn) {
+            const box = btn.closest('.copy-box');
+            // copy-btnを除いたテキストを取得
+            const clone = box.cloneNode(true);
+            clone.querySelector('.copy-btn')?.remove();
+            const text = clone.innerText.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                btn.textContent = '✅ コピー済';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'コピー';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

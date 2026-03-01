@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPad音声入力改善・機材選定ダッシュボード</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f1f5f9; /* Slate 100 */
+        }
+
+        /* Chart Container Styling - Mandatory Requirement */
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* Max width constraint */
+            height: 320px;    /* Base height */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (min-width: 768px) {
+            .chart-wrapper {
+                height: 400px; /* Taller on desktop */
+            }
+        }
+
+        /* Custom Scrollbar for text areas */
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .active-tab {
+            background-color: #2563eb; /* Blue 600 */
+            color: white;
+            border-color: #2563eb;
+        }
+        .inactive-tab {
+            background-color: white;
+            color: #64748b; /* Slate 500 */
+            border-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Navigation / Header -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <div class="bg-blue-600 text-white p-2 rounded-lg">
+                        <i class="fas fa-notes-medical text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-xl tracking-tight text-slate-900">音声入力改善コンサルタント</h1>
+                        <p class="text-xs text-slate-500">医療・カウンセリング現場向け最適化ツール</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <span class="bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full border border-blue-100">
+                        Ver. 2026.02
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Intro Section -->
+        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
+            <div class="max-w-3xl">
+                <h2 class="text-2xl font-bold text-slate-900 mb-4">iPadでのカルテ入力、ストレスを感じていませんか？</h2>
+                <p class="text-slate-600 leading-relaxed mb-6">
+                    「反応が悪い」「専門用語（筋肉名・動作）が変換できない」。これらの問題は、iPadの故障ではありません。
+                    <strong>「マイクの距離」「辞書設定」「運用スタイル」</strong>の3つを見直すだけで、劇的に改善します。
+                    このダッシュボードを使って、あなたの現場に最適な解決策を見つけましょう。
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 1: Diagnosis (Interactive Symptom Checker) -->
+        <section>
+            <div class="flex items-center gap-2 mb-4">
+                <span class="bg-slate-200 text-slate-600 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">1</span>
+                <h3 class="text-lg font-bold text-slate-800">現状の課題診断</h3>
+            </div>
+            <p class="text-slate-500 text-sm mb-4">当てはまる症状をクリックしてください。原因と対策が表示されます。</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="diagnosis-grid">
+                <!-- Cards injected by JS -->
+            </div>
+
+            <div id="diagnosis-detail" class="mt-4 bg-blue-50 border border-blue-100 rounded-xl p-6 hidden transition-all duration-300">
+                <h4 id="detail-title" class="font-bold text-blue-800 mb-2 text-lg"></h4>
+                <p id="detail-text" class="text-slate-700"></p>
+                <div class="mt-4 pt-4 border-t border-blue-200 flex justify-end">
+                    <button onclick="hideDetail()" class="text-sm text-blue-600 hover:text-blue-800 font-medium">閉じる</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Solution Matrix & Decision Engine -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Left: Interactive Decision Support -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="bg-slate-200 text-slate-600 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">2</span>
+                        <h3 class="text-lg font-bold text-slate-800">機材選定シミュレーター</h3>
+                    </div>
+                    <p class="text-slate-500 text-sm mb-4">あなたの運用スタイルを選択してください。</p>
+
+                    <!-- Selector Buttons -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-6">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">入力のタイミング</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="setTiming('realtime')" id="btn-realtime" class="p-3 rounded-lg border text-sm font-medium transition-colors text-center hover:bg-slate-50 border-slate-200 text-slate-600">
+                                    その場で入力<br><span class="text-xs font-normal opacity-75">（時短優先）</span>
+                                </button>
+                                <button onclick="setTiming('archive')" id="btn-archive" class="p-3 rounded-lg border text-sm font-medium transition-colors text-center hover:bg-slate-50 border-slate-200 text-slate-600">
+                                    後でまとめて<br><span class="text-xs font-normal opacity-75">（集中優先）</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">記録したい対象</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="setTarget('self')" id="btn-self" class="p-3 rounded-lg border text-sm font-medium transition-colors text-center hover:bg-slate-50 border-slate-200 text-slate-600">
+                                    自分の所見のみ<br><span class="text-xs font-normal opacity-75">（カルテ入力）</span>
+                                </button>
+                                <button onclick="setTarget('both')" id="btn-both" class="p-3 rounded-lg border text-sm font-medium transition-colors text-center hover:bg-slate-50 border-slate-200 text-slate-600">
+                                    会話全体<br><span class="text-xs font-normal opacity-75">（カウンセリング）</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Result Display -->
+                        <div id="recommendation-box" class="mt-4 pt-4 border-t border-slate-100 hidden">
+                            <div class="flex items-start gap-4 animate-fade-in">
+                                <div id="rec-icon" class="w-12 h-12 rounded-full flex items-center justify-center text-xl shrink-0"></div>
+                                <div>
+                                    <span class="text-xs font-bold text-slate-400 uppercase">Recommended</span>
+                                    <h4 id="rec-name" class="text-xl font-bold text-slate-900 mb-1"></h4>
+                                    <p id="rec-desc" class="text-sm text-slate-600 leading-snug mb-2"></p>
+                                    <p id="rec-price" class="text-xs font-mono text-slate-500 bg-slate-100 inline-block px-2 py-1 rounded"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Setup vs Cost Chart -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                    <h4 class="text-sm font-bold text-slate-700 mb-4">費用対効果・導入ハードル分析</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="scatterChart"></canvas>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 text-center">X軸: 導入の手間 / Y軸: 導入コスト</p>
+                </div>
+            </div>
+
+            <!-- Right: Detailed Comparison Analytics -->
+            <div class="lg:col-span-7 space-y-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="bg-slate-200 text-slate-600 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold">3</span>
+                        <h3 class="text-lg font-bold text-slate-800">製品特性比較（レーダーチャート）</h3>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+                        <p class="text-sm text-slate-600 mb-4">
+                            2大ソリューション「Shokz (ヘッドセット)」と「PLAUD (AIレコーダー)」の特性比較です。<br>
+                            <span class="text-xs text-slate-400">※グラフの面積が大きいほど、その特性が強いことを示します。</span>
+                        </p>
+
+                        <div class="chart-wrapper">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dictionary Strategy Section -->
+                <div class="bg-slate-50 rounded-2xl border border-slate-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-bold text-slate-800">💡 コストゼロで精度を上げるテクニック</h4>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <h5 class="text-blue-600 font-bold text-sm mb-2"><i class="fas fa-book mr-2"></i>ユーザー辞書登録</h5>
+                            <p class="text-xs text-slate-600 mb-3">iPadは医療用語を知りません。よく使う単語を10個登録するだけで世界が変わります。</p>
+                            <div class="bg-slate-100 p-2 rounded text-xs font-mono text-slate-500">
+                                登録例：<br>
+                                「だいたい」→「大腿」<br>
+                                「ないせん」→「内旋」
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <h5 class="text-indigo-600 font-bold text-sm mb-2"><i class="fas fa-robot mr-2"></i>AIによる後処理</h5>
+                            <p class="text-xs text-slate-600 mb-3">誤変換を気にせず喋り、後でChatGPT等に修正させます。</p>
+                            <div class="bg-slate-100 p-2 rounded text-xs font-mono text-slate-500">
+                                指示文例：<br>
+                                「以下の文章を理学療法士のカルテとして適切な用語に修正して」
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Summary Table -->
+        <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+             <div class="px-6 py-4 border-b border-slate-100 bg-slate-50">
+                <h3 class="font-bold text-slate-800">最終比較サマリー</h3>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="text-xs text-slate-500 uppercase bg-slate-50">
+                        <tr>
+                            <th class="px-6 py-3">製品名</th>
+                            <th class="px-6 py-3">ベストな用途</th>
+                            <th class="px-6 py-3">拾う声</th>
+                            <th class="px-6 py-3">操作性</th>
+                            <th class="px-6 py-3">価格目安</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 font-bold text-blue-600">Shokz OpenComm2</td>
+                            <td class="px-6 py-4">リアルタイム入力・カルテ作成</td>
+                            <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">自分のみ</span></td>
+                            <td class="px-6 py-4">◎ 簡単 (マイク感覚)</td>
+                            <td class="px-6 py-4 font-mono">¥23,000~</td>
+                        </tr>
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 font-bold text-indigo-600">PLAUD NOTE</td>
+                            <td class="px-6 py-4">カウンセリング記録・自動要約</td>
+                            <td class="px-6 py-4"><span class="bg-indigo-100 text-indigo-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">会話全体</span></td>
+                            <td class="px-6 py-4">○ アプリ操作必要</td>
+                            <td class="px-6 py-4 font-mono">¥28,000~</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="max-w-7xl mx-auto px-4 py-6 text-center text-slate-400 text-xs">
+        <p>&copy; 2026 Medical Voice Input Solutions. Prices are estimates based on market data.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Data ---
+        const diagnosisData = [
+            {
+                id: 1,
+                title: "専門用語が誤変換される",
+                icon: "fa-font",
+                cause: "iPadの標準辞書は日常会話向けです。「広背筋」→「後輩菌」のようなミスは、辞書の学習不足が原因です。",
+                solution: "【解決策】ユーザー辞書によく使う筋肉名を10個登録するか、マイクの精度を上げて発音をクリアにする必要があります。"
+            },
+            {
+                id: 2,
+                title: "反応が遅い・止まる",
+                icon: "fa-hourglass-half",
+                cause: "通信環境が不安定か、設定の「自動句読点」機能が処理を待たせている可能性があります。",
+                solution: "【解決策】設定 > 一般 > キーボード > 音声入力 で「自動句読点」をオフにしてください。また、5GHz帯のWi-Fiへの接続を推奨します。"
+            },
+            {
+                id: 3,
+                title: "雑音を拾ってしまう",
+                icon: "fa-microphone-slash",
+                cause: "iPadの内蔵マイクは距離が遠く、周囲の話し声や空調音も全て拾ってしまうため、AIが声を分離できません。",
+                solution: "【解決策】口元にマイクを持ってくる「ヘッドセット」の導入が最も効果的です。"
+            }
+        ];
+
+        const products = {
+            shokz: {
+                name: "Shokz OpenComm2",
+                desc: "自分の声だけをクリアに拾う骨伝導ヘッドセット。リアルタイム入力に最適。",
+                price: "約 ¥23,000 - ¥26,000",
+                color: "bg-blue-600",
+                icon: "fa-headset",
+                iconColor: "text-blue-600",
+                bg: "bg-blue-100"
+            },
+            plaud: {
+                name: "PLAUD NOTE",
+                desc: "会話を録音し、AIが自動で要約を作成するレコーダー。記録作業を自動化。",
+                price: "約 ¥28,000 - ¥35,000",
+                color: "bg-indigo-600",
+                icon: "fa-file-audio",
+                iconColor: "text-indigo-600",
+                bg: "bg-indigo-100"
+            }
+        };
+
+        // --- State Management ---
+        let currentSelection = {
+            timing: null,
+            target: null
+        };
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDiagnosisCards();
+            initRadarChart();
+            initScatterChart();
+        });
+
+        // --- Diagnosis Section Logic ---
+        function renderDiagnosisCards() {
+            const grid = document.getElementById('diagnosis-grid');
+            grid.innerHTML = diagnosisData.map(item => `
+                <button onclick="showDetail(${item.id})" class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm card-hover text-left flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0 text-slate-500">
+                        <i class="fas ${item.icon}"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-700 text-sm mb-1">${item.title}</h4>
+                        <span class="text-xs text-blue-500 font-semibold">原因を見る →</span>
+                    </div>
+                </button>
+            `).join('');
+        }
+
+        function showDetail(id) {
+            const data = diagnosisData.find(d => d.id === id);
+            const detailBox = document.getElementById('diagnosis-detail');
+            document.getElementById('detail-title').innerText = data.title + " の原因";
+            document.getElementById('detail-text').innerHTML = `
+                <strong class="block mb-2 text-slate-800">原因:</strong> ${data.cause}<br><br>
+                <strong class="block mb-2 text-blue-700">対策:</strong> ${data.solution}
+            `;
+            detailBox.classList.remove('hidden');
+        }
+
+        function hideDetail() {
+            document.getElementById('diagnosis-detail').classList.add('hidden');
+        }
+
+        // --- Comparison Simulator Logic ---
+        function setTiming(val) {
+            currentSelection.timing = val;
+            updateButtons('timing', val);
+            calculateRecommendation();
+        }
+
+        function setTarget(val) {
+            currentSelection.target = val;
+            updateButtons('target', val);
+            calculateRecommendation();
+        }
+
+        function updateButtons(type, val) {
+            const btns = type === 'timing' ? ['realtime', 'archive'] : ['self', 'both'];
+            btns.forEach(b => {
+                const el = document.getElementById(`btn-${b}`);
+                if (b === val) {
+                    el.classList.remove('bg-white', 'text-slate-600', 'border-slate-200');
+                    el.classList.add('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-md');
+                } else {
+                    el.classList.add('bg-white', 'text-slate-600', 'border-slate-200');
+                    el.classList.remove('bg-blue-600', 'text-white', 'border-blue-600', 'shadow-md');
+                }
+            });
+        }
+
+        function calculateRecommendation() {
+            if (!currentSelection.timing || !currentSelection.target) return;
+
+            const box = document.getElementById('recommendation-box');
+            const iconBox = document.getElementById('rec-icon');
+
+            // Logic: Archive OR Both -> PLAUD. Realtime AND Self -> Shokz.
+            let rec = 'shokz';
+            if (currentSelection.timing === 'archive' || currentSelection.target === 'both') {
+                rec = 'plaud';
+            }
+
+            const data = products[rec];
+
+            box.classList.remove('hidden');
+            document.getElementById('rec-name').innerText = data.name;
+            document.getElementById('rec-desc').innerText = data.desc;
+            document.getElementById('rec-price').innerText = "目安: " + data.price;
+
+            // Styling update
+            iconBox.className = `w-12 h-12 rounded-full flex items-center justify-center text-xl shrink-0 ${data.bg} ${data.iconColor}`;
+            iconBox.innerHTML = `<i class="fas ${data.icon}"></i>`;
+        }
+
+        // --- Charts ---
+        function initRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['リアルタイム性', '会話記録(対患者)', '音声認識精度(自)', '導入の手軽さ', '自動要約機能'],
+                    datasets: [{
+                        label: 'Shokz (ヘッドセット)',
+                        data: [10, 1, 10, 9, 1],
+                        fill: true,
+                        backgroundColor: 'rgba(37, 99, 235, 0.2)',
+                        borderColor: 'rgb(37, 99, 235)',
+                        pointBackgroundColor: 'rgb(37, 99, 235)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(37, 99, 235)'
+                    }, {
+                        label: 'PLAUD (AIレコーダー)',
+                        data: [2, 10, 8, 7, 10],
+                        fill: true,
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgb(79, 70, 229)',
+                        pointBackgroundColor: 'rgb(79, 70, 229)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(79, 70, 229)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: { line: { borderWidth: 3 } },
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        }
+
+        function initScatterChart() {
+            const ctx = document.getElementById('scatterChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bubble',
+                data: {
+                    datasets: [{
+                        label: '解決策マップ',
+                        data: [
+                            { x: 1, y: 0, r: 10, label: "辞書登録", desc: "無料・少し手間・高効果" },
+                            { x: 2, y: 0, r: 8, label: "自動句読点OFF", desc: "無料・即効性あり" },
+                            { x: 3, y: 24000, r: 15, label: "Shokz", desc: "中コスト・超簡単・高精度" },
+                            { x: 6, y: 30000, r: 15, label: "PLAUD", desc: "中コスト・要学習・自動化" },
+                            { x: 2, y: 0, r: 12, label: "AI後処理", desc: "無料・要コピペ・ストレス減" }
+                        ],
+                        backgroundColor: function(context) {
+                            const val = context.raw?.y;
+                            return val > 10000 ? 'rgba(79, 70, 229, 0.6)' : 'rgba(16, 185, 129, 0.6)';
+                        }
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw.label + ": " + context.raw.desc;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: { display: true, text: '導入の手間・学習コスト (低 → 高)' },
+                            min: 0, max: 8,
+                            grid: { display: false }
+                        },
+                        y: {
+                            title: { display: true, text: '導入コスト (円)' },
+                            min: -5000, max: 40000,
+                            ticks: {
+                                callback: function(value) { return '¥' + value; }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
