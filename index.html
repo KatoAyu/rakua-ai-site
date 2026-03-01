@@ -8,7 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background: #f8fafc; }
+        html { overflow-y: auto; }
+        body { font-family: 'Noto Sans JP', sans-serif; background: #f8fafc; -webkit-overflow-scrolling: touch; overflow-y: auto; }
 
         .tab-btn { transition: all 0.2s; }
         .tab-btn.active { background: white; color: #0f766e; border-bottom: 3px solid #0f766e; font-weight: 700; }
@@ -651,6 +652,17 @@
                     btn.classList.remove('copied');
                 }, 2000);
             });
+        }
+
+        // --- Google Sites iframe 自動高さ調整 ---
+        function postHeight() {
+            const height = document.documentElement.scrollHeight;
+            window.parent.postMessage({ iframeHeight: height }, '*');
+        }
+        window.addEventListener('load', postHeight);
+        window.addEventListener('resize', postHeight);
+        if (window.ResizeObserver) {
+            new ResizeObserver(postHeight).observe(document.body);
         }
     </script>
 </body>
