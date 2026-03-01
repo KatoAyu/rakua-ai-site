@@ -322,6 +322,71 @@
             </div>
         </section>
 
+        <!-- サイト更新方法 -->
+        <section class="bg-amber-50 border border-amber-200 rounded-2xl p-6 md:p-8">
+            <div class="flex items-center gap-2 mb-1">
+                <span class="text-xl">🔧</span>
+                <h2 class="font-bold text-lg text-amber-900">このサイトの更新方法</h2>
+            </div>
+            <p class="text-xs text-amber-600 mb-6">加藤さん向け：HTMLを編集してpushするだけで自動反映されます</p>
+
+            <div class="grid md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-white border border-amber-100 rounded-xl p-4">
+                    <div class="text-2xl mb-2">① ✏️</div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">HTMLを編集する</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed">以下のフォルダ内のファイルを編集します</p>
+                    <div class="mt-2 bg-slate-50 rounded-lg p-2 font-mono text-xs text-slate-600 break-all">
+                        Dropbox/ObsidianVault/<br>10_Projects/Side_Hustle_AI/<br>らくあ/deploy/
+                    </div>
+                    <ul class="mt-2 space-y-1 text-xs text-slate-500">
+                        <li>📄 <code>index.html</code> — 活用ガイド集</li>
+                        <li>📄 <code>project-management.html</code> — このページ</li>
+                        <li>📄 <code>recording-equipment.html</code> — 録音機材提案</li>
+                    </ul>
+                </div>
+                <div class="bg-white border border-amber-100 rounded-xl p-4">
+                    <div class="text-2xl mb-2">② 🚀</div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">git push する</h3>
+                    <p class="text-xs text-slate-500 mb-2 leading-relaxed">ターミナル（PowerShell等）で以下を実行：</p>
+                    <div class="bg-slate-800 rounded-lg p-3 font-mono text-xs text-green-300 space-y-1">
+                        <div><span class="text-slate-400"># deployフォルダに移動</span></div>
+                        <div>cd "C:\Users\kayum\...\deploy"</div>
+                        <div class="mt-2"><span class="text-slate-400"># 変更を保存して送信</span></div>
+                        <div>git add .</div>
+                        <div>git commit -m "更新内容を入力"</div>
+                        <div>git push</div>
+                    </div>
+                </div>
+                <div class="bg-white border border-amber-100 rounded-xl p-4">
+                    <div class="text-2xl mb-2">③ ✅</div>
+                    <h3 class="font-bold text-sm text-slate-800 mb-1">自動で反映される</h3>
+                    <p class="text-xs text-slate-500 leading-relaxed mb-3">pushから約1〜2分後にGitHub Pages（サーバー）が更新されます。Googleサイトのリロードで最新版が表示されます。</p>
+                    <div class="bg-teal-50 border border-teal-100 rounded-lg p-3 text-xs text-teal-700">
+                        <p class="font-bold mb-1">💡 Googleサイト側は操作不要</p>
+                        <p>URLが変わらないため、埋め込みはそのまま自動で最新内容を表示します。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-amber-100 rounded-xl p-4">
+                <h3 class="font-bold text-sm text-amber-800 mb-3">🔗 関連リンク</h3>
+                <div class="flex flex-wrap gap-3 text-xs">
+                    <a href="https://github.com/KatoAyu/rakua-ai-site" target="_blank"
+                       class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 text-white rounded-lg hover:opacity-80 transition-opacity">
+                        <i class="fab fa-github"></i> GitHubリポジトリ
+                    </a>
+                    <a href="https://katoayu.github.io/rakua-ai-site/" target="_blank"
+                       class="flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 text-white rounded-lg hover:opacity-80 transition-opacity">
+                        <i class="fas fa-globe"></i> GitHub Pages（公開URL）
+                    </a>
+                    <a href="https://github.com/KatoAyu/rakua-ai-site/settings/pages" target="_blank"
+                       class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg hover:opacity-80 transition-opacity">
+                        <i class="fas fa-cog"></i> GitHub Pages 設定
+                    </a>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="max-w-5xl mx-auto px-4 py-4 text-center text-slate-400 text-xs mt-4">
