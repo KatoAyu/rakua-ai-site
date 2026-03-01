@@ -322,49 +322,61 @@
 
             <div class="bg-blue-600 text-white rounded-2xl p-6">
                 <h2 class="text-xl font-bold mb-1">🎤 音声カルテ入力ガイド</h2>
-                <p class="text-blue-100 text-sm">喋るだけでカルテが完成。夜の残業をゼロにする方法</p>
+                <p class="text-blue-100 text-sm">Plaudeで録音 → 自動文字起こし → Geminiで整形。施術後2分で完成</p>
+            </div>
+
+            <!-- Plaudeとは -->
+            <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+                <h3 class="font-bold text-blue-800 mb-2">📱 Plaudeとは？</h3>
+                <p class="text-sm text-slate-600">話した内容を<strong>自動で文字起こし</strong>してくれるアプリです。施術後にスマホに向かってメモを話すだけで、そのまま使えるテキストが手に入ります。<br>誤変換はGeminiが次のステップで直してくれるので、気にせず話してOKです。</p>
             </div>
 
             <!-- 全体の流れ -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-                <h3 class="font-bold text-slate-700 mb-4">全体の流れ（3ステップ）</h3>
+                <h3 class="font-bold text-slate-700 mb-4">全体の流れ（4ステップ）</h3>
                 <div class="flex flex-col md:flex-row items-start md:items-center gap-3 text-sm text-center">
                     <div class="flex-1 bg-blue-50 border border-blue-100 rounded-xl p-4">
                         <div class="text-2xl mb-1">🎤</div>
                         <div class="font-bold text-blue-700">STEP 1</div>
-                        <div class="text-slate-600 mt-1">施術直後に<br>音声入力でメモ</div>
+                        <div class="text-slate-600 mt-1">Plaudeで<br>施術メモを録音</div>
+                    </div>
+                    <div class="text-slate-300 text-2xl hidden md:block">→</div>
+                    <div class="flex-1 bg-sky-50 border border-sky-100 rounded-xl p-4">
+                        <div class="text-2xl mb-1">📄</div>
+                        <div class="font-bold text-sky-700">STEP 2</div>
+                        <div class="text-slate-600 mt-1">文字起こしを<br>確認してコピー</div>
                     </div>
                     <div class="text-slate-300 text-2xl hidden md:block">→</div>
                     <div class="flex-1 bg-purple-50 border border-purple-100 rounded-xl p-4">
-                        <div class="text-2xl mb-1">📋</div>
-                        <div class="font-bold text-purple-700">STEP 2</div>
-                        <div class="text-slate-600 mt-1">文字をコピーして<br>GeminiへペーストI</div>
+                        <div class="text-2xl mb-1">🤖</div>
+                        <div class="font-bold text-purple-700">STEP 3</div>
+                        <div class="text-slate-600 mt-1">GeminiでAI整形</div>
                     </div>
                     <div class="text-slate-300 text-2xl hidden md:block">→</div>
                     <div class="flex-1 bg-green-50 border border-green-100 rounded-xl p-4">
                         <div class="text-2xl mb-1">✅</div>
-                        <div class="font-bold text-green-700">STEP 3</div>
-                        <div class="text-slate-600 mt-1">整形されたカルテを<br>電子カルテに貼る</div>
+                        <div class="font-bold text-green-700">STEP 4</div>
+                        <div class="text-slate-600 mt-1">電子カルテに<br>貼り付けて完了</div>
                     </div>
                 </div>
             </div>
 
             <!-- STEP 1 -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-                <h3 class="font-bold text-slate-700 mb-4"><span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 1</span>音声入力の使い方（iPad）</h3>
+                <h3 class="font-bold text-slate-700 mb-4"><span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 1</span>Plaudeで録音する</h3>
                 <div class="space-y-4">
                     <div class="flex items-start gap-4">
                         <div class="step-num bg-blue-100 text-blue-700">1</div>
                         <div>
-                            <p class="font-semibold text-slate-800">電子カルテまたはメモアプリを開く</p>
-                            <p class="text-xs text-slate-400">テキスト入力欄をタップして、キーボードを表示</p>
+                            <p class="font-semibold text-slate-800">Plaudeアプリを開く</p>
+                            <p class="text-xs text-slate-400">施術が終わったタイミングですぐ開く習慣をつけると◎</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
                         <div class="step-num bg-blue-100 text-blue-700">2</div>
                         <div>
-                            <p class="font-semibold text-slate-800">キーボード右下のマイクアイコン🎤をタップ</p>
-                            <p class="text-xs text-slate-400">「音声入力中...」と表示されたらOK</p>
+                            <p class="font-semibold text-slate-800">録音ボタンをタップして話し始める</p>
+                            <p class="text-xs text-slate-400">患者さんが退室した直後、記憶が新鮮なうちに</p>
                         </div>
                     </div>
                     <div class="flex items-start gap-4">
@@ -380,51 +392,77 @@
                             </div>
                         </div>
                     </div>
+                    <div class="flex items-start gap-4">
+                        <div class="step-num bg-blue-100 text-blue-700">4</div>
+                        <div>
+                            <p class="font-semibold text-slate-800">録音を停止する</p>
+                            <p class="text-xs text-slate-400">Plaudeが自動で文字起こしを開始します</p>
+                        </div>
+                    </div>
                     <div class="tip-box text-sm text-slate-700">
-                        <strong>💡 コツ：</strong> 誤変換は気にしない。「だいたい」→「大腿」になっても、GeminiがSTEP2で直してくれます。
+                        <strong>💡 コツ：</strong> 誤変換は気にしない！「だいたい」→「大腿」になっても、次のGeminiのステップで正しく直してくれます。
                     </div>
                 </div>
             </div>
 
             <!-- STEP 2 -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-                <h3 class="font-bold text-slate-700 mb-4"><span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 2</span>GeminiでAI整形</h3>
-                <p class="text-sm text-slate-500 mb-4">音声入力で書いた文章をコピーして、以下のプロンプトと一緒にGeminiに送ります。</p>
+                <h3 class="font-bold text-slate-700 mb-4"><span class="bg-sky-100 text-sky-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 2</span>文字起こしを確認してコピー</h3>
+                <div class="space-y-3 text-sm text-slate-600">
+                    <div class="flex items-start gap-3">
+                        <span class="text-sky-500 font-bold shrink-0">①</span>
+                        <p>文字起こしが完了したら内容をざっと確認する</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-sky-500 font-bold shrink-0">②</span>
+                        <p>テキストを全選択してコピーする</p>
+                    </div>
+                    <div class="flex items-start gap-3">
+                        <span class="text-sky-500 font-bold shrink-0">③</span>
+                        <p>Gemini（次のSTEP）に持っていく</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+                <h3 class="font-bold text-slate-700 mb-4"><span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 3</span>GeminiでAI整形</h3>
+                <p class="text-sm text-slate-500 mb-4">Plaudeの文字起こしをコピーして、以下のプロンプトと一緒にGeminiに送ります。</p>
                 <div class="copy-box">以下の音声メモを、理学療法士・整体師のカルテとして適切な形式に整えてください。
 誤変換された専門用語（例：後輩菌→広背筋）も正しく直してください。
 箇条書きで、「主訴」「施術部位・内容」「患者反応」「次回方針」の4項目にまとめてください。
 
 【音声メモ】
-（ここに音声入力した文章をペースト）<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
+（ここにPlaudeの文字起こしをペースト）<button class="copy-btn" onclick="copyText(this)">コピー</button></div>
             </div>
 
-            <!-- STEP 3 -->
+            <!-- STEP 4 -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-                <h3 class="font-bold text-slate-700 mb-3"><span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 3</span>電子カルテに貼り付けて完了</h3>
+                <h3 class="font-bold text-slate-700 mb-3"><span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded mr-2">STEP 4</span>電子カルテに貼り付けて完了</h3>
                 <p class="text-sm text-slate-500">Geminiが整形してくれたカルテをコピーして、電子カルテの所見欄に貼るだけです。</p>
             </div>
 
-            <!-- iPad設定Tips -->
+            <!-- Plaudeのコツ -->
             <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-                <h3 class="font-bold text-slate-700 mb-3">📱 iPad 音声入力の精度を上げる設定</h3>
+                <h3 class="font-bold text-slate-700 mb-3">💡 Plaudeをうまく使うコツ</h3>
                 <div class="space-y-3 text-sm">
                     <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
                         <span class="text-blue-500 shrink-0">①</span>
-                        <div><p class="font-medium">自動句読点をオフにする</p><p class="text-slate-500">設定 → 一般 → キーボード → 音声入力 → 自動句読点：オフ</p></div>
+                        <div><p class="font-medium">静かな場所で録音する</p><p class="text-slate-500">BGMや雑音があると精度が下がります。患者さんが帰った直後が最適</p></div>
                     </div>
                     <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
                         <span class="text-blue-500 shrink-0">②</span>
-                        <div><p class="font-medium">よく使う専門用語を辞書登録</p><p class="text-slate-500">設定 → 一般 → キーボード → ユーザー辞書<br>例：「だいたい」→「大腿」／「ないせん」→「内旋」</p></div>
+                        <div><p class="font-medium">項目ごとに「間」を少し入れる</p><p class="text-slate-500">「主訴は…（少し間）、施術は…」とゆっくり話すと文字起こしが綺麗になります</p></div>
                     </div>
                     <div class="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
                         <span class="text-blue-500 shrink-0">③</span>
-                        <div><p class="font-medium">5GHz Wi-Fiに接続する</p><p class="text-slate-500">音声入力はネットを使います。2.4GHzより5GHzの方が安定します。</p></div>
+                        <div><p class="font-medium">専門用語は正式名称で話す</p><p class="text-slate-500">略語より「広背筋」「内旋」などフルで言う方が文字起こし精度が上がります</p></div>
                     </div>
                 </div>
             </div>
 
             <div class="warn-box text-sm text-slate-700">
-                <strong>📌 現在の状況：</strong> 5名の患者さんで1ヶ月間の試験運用中（2026年2月24日〜）。3月中に中間フィードバックを加藤に共有してください。
+                <strong>📌 まずやること：</strong> Plaudeアプリをインストールして、試しに今日1件の施術メモを録音してみましょう。うまくいったら加藤に共有してください！
             </div>
         </div>
 
