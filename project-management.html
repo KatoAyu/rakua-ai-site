@@ -433,6 +433,8 @@
                 phase: 'Phase 2 ： 業務効率化',
                 phaseColor: 'text-blue-700 bg-blue-50 border-blue-200',
                 items: [
+                    { name: '顧客情報一元管理シートの作成', status: 'done', owner: '多川さん', note: '回数・支払い・提案時期・プリカ残高・治療計画・顧客情報を一元化。新規顧客から運用開始済み（3月〜）' },
+                    { name: '顧客満足度アンケートの実施', status: 'wip', owner: '多川さん', note: '来院回数の半分を過ぎた患者様対象。3月はデータ収集、4月以降に振り返り・改善' },
                     { name: '音声入力によるカルテ記入（電子カルテ × PLAUD）', status: 'wip', owner: '多川さん', note: '5名で1ヶ月試験運用中（2/24〜）' },
                     { name: '録音機材選定（PLAUD / Shokz）', status: 'review', owner: '加藤 → らくあ', note: '提案済み・院長検討中' },
                     { name: 'Instagram 集客動線設計（フォロワー→来店）', status: 'wip', owner: '両者', note: '投稿再開・LINEとの連携検討中' },
@@ -490,6 +492,8 @@
         const nextActions = [
             { priority: '高', text: '音声カルテ 1ヶ月試験の中間フィードバック確認', who: '多川さん', by: '3月中' },
             { priority: '高', text: 'PLAUD or Shokz 購入判断', who: '多川さん', by: '3月上旬' },
+            { priority: '中', text: 'iPad入力オペレーションの定着（手書き→まとめ入力→音声の使い分け）', who: '多川さん', by: '3月中' },
+            { priority: '中', text: '顧客満足度アンケートのデータ収集', who: '多川さん', by: '3月中' },
             { priority: '中', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '次回打合せまで' },
             { priority: '中', text: '訪問神経マッサージ 動画撮影スケジュール確定', who: '多川さん', by: '3月末' },
             { priority: '低', text: 'Gemini への ChatGPT 情報引き継ぎプロンプト作成', who: '加藤', by: '4月' },
