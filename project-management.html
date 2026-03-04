@@ -285,14 +285,20 @@
                 </ul>
             </section>
 
-            <!-- ミーティングログ -->
+            <!-- ミーティング（次回 + アーカイブ） -->
             <section class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
                 <h2 class="font-bold text-slate-700 mb-4 flex items-center gap-2">
-                    <i class="fas fa-calendar-check text-teal-500"></i> ミーティングログ
+                    <i class="fas fa-video text-teal-500"></i> ミーティング
                 </h2>
-                <ul class="space-y-3" id="meeting-log">
-                    <!-- JS で描画 -->
-                </ul>
+                <!-- 次回ミーティング -->
+                <div id="meeting-next" class="mb-4"></div>
+                <!-- 過去の記録 -->
+                <div>
+                    <p class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">📁 過去の記録</p>
+                    <ul class="space-y-3" id="meeting-log">
+                        <!-- JS で描画 -->
+                    </ul>
+                </div>
             </section>
         </div>
 
@@ -514,19 +520,88 @@
             `).join('');
         }
 
-        // --- ミーティングログ ---
+        // --- ミーティング ---
+
+        // ★ 毎月更新：次回ミーティング情報
+        const nextMeeting = {
+            date: '2026-04-01',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
+            time: '19:00',                 // ← 要更新：開始時間
+            meetUrl: 'https://meet.google.com/xxx-xxx-xxx',  // ← 要更新：Google Meet URL
+        };
+
+        // ★ 打合せ後に追加：録画URL（Googleドライブ等）
         const meetings = [
-            { date: '2026-02-06', summary: '打合せ②：動画制作・AI使い分け・予約自動化・音声カルテ', hasLink: true },
-            { date: '2026-01-26', summary: '顧客リスト共有・初回ヒアリング完了', hasLink: false },
+            {
+                date: '2026-02-06',
+                summary: '打合せ②：動画制作・AI使い分け・予約自動化・音声カルテ',
+                recordingUrl: null,  // ← Google Meet録画URLを追加（Googleドライブの共有リンク）
+                tldvUrl: 'https://tldv.io/app/meetings/69855a48727e830013801aea/',
+            },
+            {
+                date: '2026-01-26',
+                summary: '打合せ①：顧客リスト共有・初回ヒアリング',
+                recordingUrl: null,
+                tldvUrl: null,
+            },
         ];
+
+        function renderNextMeeting() {
+            const el = document.getElementById('meeting-next');
+            if (!nextMeeting.date) { el.innerHTML = ''; return; }
+
+            const meetDate = new Date(nextMeeting.date);
+            const today = new Date(); today.setHours(0,0,0,0);
+            const diffDays = Math.ceil((meetDate - today) / (1000 * 60 * 60 * 24));
+            const dayNames = ['日','月','火','水','木','金','土'];
+            const diffLabel = diffDays > 0 ? `あと ${diffDays} 日`
+                            : diffDays === 0 ? '🎉 今日！'
+                            : `${Math.abs(diffDays)} 日前`;
+            const diffColor = diffDays > 7  ? 'text-slate-400'
+                            : diffDays > 0  ? 'text-amber-600 font-bold'
+                            : diffDays === 0 ? 'text-teal-600 font-bold'
+                            : 'text-slate-400';
+
+            el.innerHTML = `
+                <div class="bg-teal-50 border border-teal-200 rounded-xl p-4">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="text-xs font-bold text-teal-700">📅 次回ミーティング</div>
+                        <span class="text-xs ${diffColor}">${diffLabel}</span>
+                    </div>
+                    <div class="font-bold text-slate-800 text-base mb-0.5">
+                        ${nextMeeting.date}（${dayNames[meetDate.getDay()]}）
+                    </div>
+                    <div class="text-sm text-slate-500 mb-3">${nextMeeting.time}〜 ／ Google Meet</div>
+                    <a href="${nextMeeting.meetUrl}" target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 bg-teal-600 text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors">
+                        <i class="fas fa-video"></i> Google Meet で参加
+                    </a>
+                </div>
+            `;
+        }
 
         function renderMeetings() {
             const el = document.getElementById('meeting-log');
             el.innerHTML = meetings.map(m => `
                 <li class="flex items-start gap-3">
-                    <span class="text-xs font-mono bg-slate-100 text-slate-500 px-2 py-1 rounded shrink-0">${m.date}</span>
-                    <div class="text-sm text-slate-700 leading-snug">${m.summary}
-                        ${m.hasLink ? '<span class="ml-1 text-xs text-blue-500">[tldv記録あり]</span>' : ''}
+                    <span class="text-xs font-mono bg-slate-100 text-slate-500 px-2 py-1 rounded shrink-0 mt-0.5">${m.date}</span>
+                    <div class="flex-1 text-sm text-slate-700 leading-snug">
+                        <div>${m.summary}</div>
+                        <div class="flex gap-3 mt-1.5 flex-wrap">
+                            ${m.recordingUrl
+                                ? `<a href="${m.recordingUrl}" target="_blank" rel="noopener"
+                                      class="text-xs text-green-600 hover:underline flex items-center gap-1">
+                                      <i class="fas fa-play-circle"></i> 録画を見る
+                                   </a>`
+                                : '<span class="text-xs text-slate-300 flex items-center gap-1"><i class="fas fa-play-circle"></i> 録画なし</span>'
+                            }
+                            ${m.tldvUrl
+                                ? `<a href="${m.tldvUrl}" target="_blank" rel="noopener"
+                                      class="text-xs text-purple-500 hover:underline flex items-center gap-1">
+                                      <i class="fas fa-closed-captioning"></i> tldv（文字起こし）
+                                   </a>`
+                                : ''
+                            }
+                        </div>
                     </div>
                 </li>
             `).join('');
@@ -638,6 +713,7 @@
         // --- Init ---
         renderTasks();
         renderNextActions();
+        renderNextMeeting();
         renderMeetings();
         renderExternalLinks();
         renderStaticFiles();
