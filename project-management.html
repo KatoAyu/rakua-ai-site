@@ -335,6 +335,10 @@
             </h2>
             <div class="bg-white rounded-lg border border-slate-200 p-4 text-sm text-slate-600 space-y-2">
                 <div class="flex gap-3">
+                    <span class="text-xs font-mono bg-amber-100 text-amber-700 px-2 py-0.5 rounded shrink-0">2026-05-10</span>
+                    <span>5/13ミーティングに向けて加藤側準備完了。経過日数算出の数式テンプレ、NotebookLM経営分析向け質問例、紙カルテOCRプロンプト例、3ヶ月ロードマップ案を整備。週明けに院長へリマインド予定。</span>
+                </div>
+                <div class="flex gap-3">
                     <span class="text-xs font-mono bg-teal-100 text-teal-700 px-2 py-0.5 rounded shrink-0">2026-04-14</span>
                     <span>iPad入力は断念し、受付のスプレッドシート入力から顧客管理シートへ自動引き込む方式へ転換。NotebookLMで経営分析・カルテ画像のテキスト化を試行。Otter.aiは一旦保留。次回は5/13、来月香川県訪問予定。</span>
                 </div>
@@ -504,10 +508,11 @@
 
         // --- ネクストアクション ---
         const nextActions = [
+            { priority: '高', text: '【加藤】5/13打合せ前リマインドを院長へ送付（聞きたいこと事前共有）', who: '加藤', by: '5/12まで' },
             { priority: '高', text: '顧客管理シート設計（1日毎シートから自動引き込み・顧客番号/名前/来店日/経過日数を表示）', who: '田川さん', by: '5/13まで' },
-            { priority: '高', text: '経過日数の自動計算関数の実装（必要時は加藤へ相談）', who: '田川さん／加藤', by: '5/13まで' },
-            { priority: '中', text: 'NotebookLMで3月データの経営分析試行（顧客属性・コスト・来店経路・稼働実績）', who: '田川さん', by: '5/13まで' },
-            { priority: '中', text: 'カルテ画像のNotebookLM読み込み→スプレッドシート変換の実用性確認', who: '田川さん', by: '5/13まで' },
+            { priority: '高', text: '経過日数の自動計算関数の実装（必要時は加藤へ相談・テンプレ準備済み）', who: '田川さん／加藤', by: '5/13まで' },
+            { priority: '中', text: 'NotebookLMで3月データの経営分析試行（質問例リスト準備済み・当日提示）', who: '田川さん', by: '5/13まで' },
+            { priority: '中', text: 'カルテ画像のNotebookLM読み込み→スプレッドシート変換の実用性確認（プロンプト例準備済み）', who: '田川さん', by: '5/13まで' },
             { priority: '中', text: 'アンケート結果をNotebookLMに蓄積しマーケティング分析へ活用', who: '田川さん', by: '継続' },
             { priority: '中', text: '来月の香川訪問・対面MTGスケジュール調整（張替え氏と）', who: '加藤', by: '別途' },
             { priority: '低', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '顧客管理シート整備後' },
