@@ -1,20 +1,43 @@
 ---
 name: business-trip-record
-description: Use when the user provides boarding passes, hotel check-in info, or asks to record/file a business trip (出張記録/搭乗証明書/宿泊証明/旅費精算/税理士提出). Generates a printable HTML trip record under `/tmp/` and delivers it to the user via SendUserFile for manual upload to Google Drive.
+description: Use when the user provides boarding passes, hotel check-in info, or asks to record/file a business trip (出張記録/搭乗証明書/宿泊証明/旅費精算/税理士提出). Generates a printable HTML trip record and uploads it to the dedicated Google Drive folder under 旅費規程/旅費規程スキーム/出張報告書/Claude生成出張記録.
 ---
 
 # 出張記録スキル（business-trip-record）
 
-会社の出張があったとき、税理士提出用の出張記録HTML（搭乗証明書＋宿泊記録＋旅費規程適用）を生成して、ユーザーへ送付します。
+会社の出張があったとき、税理士提出用の出張記録HTML（搭乗証明書＋宿泊記録＋旅費規程適用）を生成し、Google Drive の指定フォルダへ自動アップロードします。
 
 ## 重要：個人情報の取扱い
 
-出張記録には氏名・宿泊先・客室番号・JAL予約ID等の個人情報が含まれます。**このリポジトリ（公開GitHub Pagesサイト）には絶対にコミットしないこと**。
+出張記録には氏名・宿泊先・客室番号・JAL予約ID等の個人情報が含まれます。**このリポジトリ（公開GitHub Pagesサイト）には絶対にコミットしないこと**。過去に `boarding-passes.html` を一時的にこのリポジトリへ作成したが削除済み。同様の誤りを繰り返さないこと。
 
-- 出力先：`/tmp/business-trips/` （セッション内一時領域、リポジトリ外）
-- 配信方法：`SendUserFile` で proactive 送付
-- ユーザーが手動でGoogle Driveへアップロードする想定
-- 過去に `boarding-passes.html` を一時的にこのリポジトリへ作成したが削除済み。同様の誤りを繰り返さないこと
+- 一時生成先：`/tmp/business-trips/`（リポジトリ外）
+- 最終保存先：Google Drive 既定フォルダ（下記）
+- 配信方法：MCP 経由で Drive へ直接アップロード（`SendUserFile` は不要、ただしユーザーが手元コピーを要求した場合は併用可）
+
+## Google Drive 保存先（固定）
+
+**フォルダ階層**：
+```
+マイドライブ
+└─ 旅費規程
+   └─ 旅費規程スキーム
+      └─ 出張報告書
+         └─ Claude生成出張記録  ← ★ ここに溜める
+```
+
+**Folder ID（parentId として使用）**：`1Ouc0oIcLIo0l8PWoTIOyLWlwmeqgoX3s`
+**View URL**：https://drive.google.com/drive/folders/1Ouc0oIcLIo0l8PWoTIOyLWlwmeqgoX3s
+
+**ファイル命名規則**：
+```
+YYYY-MM-DD_<行先>_<訪問先または用件>.html
+```
+
+例：
+- `2026-05-16_高松_らくあ様訪問.html` ← 2026年5月分（既に格納済み）
+- `2026-07-03_大阪_◯◯展示会.html`
+- `2026-08-20_福岡_△△商談.html`
 
 ## トリガー
 
@@ -24,17 +47,18 @@ description: Use when the user provides boarding passes, hotel check-in info, or
 - 「出張記録して」「税理士提出用に保管して」「経費申請」と依頼
 - 旅費精算・出張費の計上について相談
 
-## 出力ファイル
+## アップロード手順
 
-```
-/tmp/business-trips/YYYY-MM-DD-<destination-slug>.html
-```
-
-例：
-- `/tmp/business-trips/2026-05-16-takamatsu.html`
-- `/tmp/business-trips/2026-07-03-osaka.html`
-
-生成後、必ず `SendUserFile` で `status: "proactive"` 指定でユーザーへ送付し、「ブラウザで開き、印刷→PDF保存→Google Driveへアップロードしてください」と案内する。
+1. `/tmp/business-trips/` ディレクトリを作成
+2. HTML を生成して `/tmp/business-trips/YYYY-MM-DD_<行先>_<用件>.html` に書き出し
+3. `mcp__cba690db-cf76-43b0-bef8-8c854f4130c9__create_file` で Drive へアップロード：
+   - `parentId`: `1Ouc0oIcLIo0l8PWoTIOyLWlwmeqgoX3s`
+   - `title`: 上記命名規則
+   - `contentMimeType`: `text/html`
+   - `disableConversionToGoogleType`: `true`（HTMLのまま保存）
+   - `textContent`: HTMLの全文
+4. アップロード成功後、ファイルの View URL（`https://drive.google.com/file/d/<id>/view`）をユーザーへ案内
+5. **絶対に `git add` / `git commit` しない**
 
 ## テンプレート構造（必ずこの5セクション順）
 
@@ -50,16 +74,17 @@ description: Use when the user provides boarding passes, hotel check-in info, or
 4. **搭乗証明書 2（復路）** ※片道のみなら省略可
 5. **宿泊記録** ※日帰り出張なら省略
 
-HTML構造は以下の要件を満たすこと：
+HTML構造の要件：
 
 - `<!DOCTYPE html>` + `<html lang="ja">` + Tailwind CDN + Noto Sans JP
 - `@media print` で toolbar 非表示、各セクションを `page-break-after: always` で改ページ
 - 上部ツールバーに「印刷 / PDF保存」ボタン（`window.print()`）
+- 「戻る」リンクは入れない（Drive で単体表示するため）
 - JAL搭乗証明書セクション：赤●ロゴ + `JAPAN AIRLINES` テキスト、Web ID と発行日時を右上に転記
 - 宿泊記録セクション：ホテル名を金茶色（`#94714b`）で見出し化
 - 旅費規程適用セクション：費目×（適用条文・単価／数量／計上方法）の3列表
 
-詳細レイアウトは過去版（git history の `boarding-passes.html`）を参照。
+詳細レイアウトは Drive 上の `2026-05-16_高松_らくあ様訪問.html`（参考実装）を雛形にする。
 
 ## 適用する旅費規程（固定値）
 
@@ -106,16 +131,6 @@ HTML構造は以下の要件を満たすこと：
 - [ ] 宿泊先（ホテル名・室番号）→ キーカードホルダーから抽出
 - [ ] 金額表示の要否（既定：**金額は記載しない**。実費は領収書参照、規程額は単価のみ表記）
 
-## 配信フロー（必須）
-
-1. `/tmp/business-trips/` ディレクトリを作成（存在しなければ `mkdir -p`）
-2. HTMLを生成して `/tmp/business-trips/YYYY-MM-DD-<destination>.html` に書き出し
-3. `SendUserFile` で配信（`status: "proactive"`）
-4. ユーザーへ以下を案内：
-   - 「ファイルを開いて画面上部の『印刷 / PDF保存』ボタンからPDF化してください」
-   - 「PDFをGoogle Driveの経費フォルダ等にアップロードしてください」
-5. **絶対に `git add` / `git commit` しない**
-
 ## 注意事項
 
 - 金額は原則として記載しない（規程単価のみ）。税理士側で領収書と規程に基づき計上する前提。
@@ -123,4 +138,4 @@ HTML構造は以下の要件を満たすこと：
 - 搭乗証明書の Web ID（`Web xxxxx...`）と発行日時は必ず転記。
 - ホテル情報は「正式な領収書はホテル発行のものを別途参照」と注記すること（このページは記録メモであり領収書ではない）。
 - 個人情報（パスポート番号・クレジットカード番号等）は転記しない。Wi-Fi パスワード等の宿泊施設情報も記載不要。
-- **再掲：このリポジトリへのコミット禁止**。`/tmp` への一時生成 + `SendUserFile` 配信のみ。
+- **再掲：このリポジトリへのコミット禁止**。`/tmp` への一時生成 + Drive アップロードのみ。
