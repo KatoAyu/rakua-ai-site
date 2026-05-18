@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搭乗証明書 保管 | 経費申請用</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .cert {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 40px 48px;
+            max-width: 760px;
+            margin: 0 auto;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .cert-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .jal-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .jal-mark {
+            color: #e60012;
+            font-size: 42px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+        .jal-text {
+            font-weight: 900;
+            font-style: italic;
+            color: #1a1a1a;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .cert-meta {
+            text-align: right;
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .cert-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            margin: 32px 0 24px;
+            letter-spacing: 6px;
+        }
+
+        .cert-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            padding: 14px 24px;
+            font-size: 14px;
+        }
+        .cert-row + .cert-row {
+            border-top: 1px dashed #f1f5f9;
+        }
+        .cert-label { color: #475569; }
+        .cert-value { color: #0f172a; font-weight: 500; }
+
+        .cert-footer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px dashed #cbd5e1;
+            font-size: 12px;
+            color: #334155;
+            line-height: 1.8;
+        }
+
+        .toolbar {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        @media print {
+            body { background: white; }
+            .toolbar { display: none; }
+            .cert {
+                box-shadow: none;
+                border: none;
+                page-break-after: always;
+                max-width: 100%;
+            }
+            .cert:last-child { page-break-after: auto; }
+            .page-wrap { padding: 0; }
+        }
+
+        .page-wrap {
+            padding: 32px 16px 64px;
+        }
+        .cert + .cert {
+            margin-top: 32px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <div class="flex items-center gap-2">
+            <i class="fas fa-plane-departure text-teal-600"></i>
+            <span class="font-bold text-sm">搭乗証明書 保管（経費申請用）</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="index.html" class="text-xs text-slate-500 hover:text-slate-800">
+                <i class="fas fa-arrow-left mr-1"></i>戻る
+            </a>
+            <button onclick="window.print()" class="bg-teal-600 hover:bg-teal-700 text-white text-xs font-bold px-3 py-1.5 rounded">
+                <i class="fas fa-print mr-1"></i>印刷 / PDF保存
+            </button>
+        </div>
+    </div>
+
+    <div class="page-wrap">
+
+        <!-- 搭乗証明書 1 : 往路 2026/5/16 -->
+        <section class="cert">
+            <div class="cert-header">
+                <div class="jal-logo">
+                    <span class="jal-mark">●</span>
+                    <span class="jal-text">JAPAN AIRLINES</span>
+                </div>
+                <div class="cert-meta">
+                    <div>Web f4beff59cbefe8c9c6a92696bd1c4884</div>
+                    <div>2026年5月18日 09:05</div>
+                </div>
+            </div>
+
+            <div class="cert-title">搭 乗 証 明 書</div>
+
+            <div>
+                <div class="cert-row">
+                    <div class="cert-label">お名前</div>
+                    <div class="cert-value">カトウ アユミ 様</div>
+                </div>
+                <div class="cert-row">
+                    <div class="cert-label">年月日</div>
+                    <div class="cert-value">2026年5月16日（土）</div>
+                </div>
+                <div class="cert-row">
+                    <div class="cert-label">便名</div>
+                    <div class="cert-value">JAL 481</div>
+                </div>
+                <div class="cert-row">
+                    <div class="cert-label">区間</div>
+                    <div class="cert-value">東京 (羽田) → 高松</div>
+                </div>
+            </div>
+
+            <div class="cert-footer">
+                上記のとおり、ご搭乗いただきましたことを証明いたします。<br>
+                日本航空株式会社
+            </div>
+        </section>
+
+        <!-- 搭乗証明書 2 : 復路 2026/5/18 -->
+        <section class="cert">
+            <div class="cert-header">
+                <div class="jal-logo">
+                    <span class="jal-mark">●</span>
+                    <span class="jal-text">JAPAN AIRLINES</span>
+                </div>
+                <div class="cert-meta">
+                    <div>Web 750486d598cba2ef44ad44f4332d0891</div>
+                    <div>2026年5月18日 09:05</div>
+                </div>
+            </div>
+
+            <div class="cert-title">搭 乗 証 明 書</div>
+
+            <div>
+                <div class="cert-row">
+                    <div class="cert-label">お名前</div>
+                    <div class="cert-value">カトウ アユミ 様</div>
+                </div>
+                <div class="cert-row">
+                    <div class="cert-label">年月日</div>
+                    <div class="cert-value">2026年5月18日（月）</div>
+                </div>
+                <div class="cert-row">
+                    <div class="cert-label">便名</div>
+                    <div class="cert-value">JAL 474</div>
+                </div>
+                <div class="cert-row">
+                    <div class="cert-label">区間</div>
+                    <div class="cert-value">高松 → 東京 (羽田)</div>
+                </div>
+            </div>
+
+            <div class="cert-footer">
+                上記のとおり、ご搭乗いただきましたことを証明いたします。<br>
+                日本航空株式会社
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
