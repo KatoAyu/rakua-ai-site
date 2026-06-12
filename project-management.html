@@ -246,7 +246,7 @@
                 <div class="text-xs text-slate-500 mt-1">完了タスク</div>
             </div>
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
-                <div class="text-3xl font-bold text-blue-600">3</div>
+                <div class="text-3xl font-bold text-blue-600">5</div>
                 <div class="text-xs text-slate-500 mt-1">進行中</div>
             </div>
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
@@ -335,7 +335,11 @@
             </h2>
             <div class="bg-white rounded-lg border border-slate-200 p-4 text-sm text-slate-600 space-y-2">
                 <div class="flex gap-3">
-                    <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-05-13</span>
+                    <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-06-12</span>
+                    <span>6/12 AI定例（多川さん単独）に向け加藤側準備完了。NotebookLMデモ用サンプルデータ（来店ログ・顧客マスタ・来店アンケート）、月次「経営ひとことレポート」の型、月次レポート下書き専用Gemの設計、既存アンケートに足す観点メモを整備。当日は「分析した」で終わらせず、成果物の型を1本その場で作り、毎月回る運用に乗せる。</span>
+                </div>
+                <div class="flex gap-3">
+                    <span class="text-xs font-mono bg-teal-100 text-teal-700 px-2 py-0.5 rounded shrink-0">2026-05-13</span>
                     <span>打合せ⑤実施。来店ログ＋来店管理の2シート分離テンプレを共有・院長即合意。アンケート分析フロー（CSV→PDF→NotebookLM）確立。Gem機能を実演し業務組込合意。紙カルテOCRは5/16訪問へ持ち越し。次回6/12（金）12:00。</span>
                 </div>
                 <div class="flex gap-3">
@@ -456,7 +460,9 @@
                     { name: '来店管理シート設計（ログ/管理の2分離・経過日数自動算出）', status: 'done', owner: '多川さん／加藤', note: '5/13合意：来店ログと来店管理を2シートに分離。経過日数・理想ペース比較・アプローチ要否を自動判定するテンプレを加藤が共有済み。院長は実顧客で運用開始予定（6/12まで）' },
                     { name: '顧客満足度アンケートの分析フロー確立', status: 'done', owner: '多川さん', note: '5/13合意：26〜183件のアンケートを「フォーム→CSV→PDF→NotebookLM」で分析するフロー確定。マーケ・商品開発・継続率向上に活用' },
                     { name: 'NotebookLMでの経営分析（顧客属性・稼働実績・視点の補完）', status: 'done', owner: '多川さん', note: '5/13確認：日常業務で活用中。「持っていない視点を得て意思決定の確信を強める」用途で定着。月次PDFを投入する運用が回っている' },
-                    { name: 'Gem（カスタムAI）の業務導入', status: 'wip', owner: '多川さん', note: '5/13実演：プロンプト＋知識ベースを埋め込んだカスタムAIをマーケ・顧客管理・クレーム対応 等で活用。院長が業務用Gemを1つ以上作成予定（6/12まで）' },
+                    { name: '月次「経営ひとことレポート」の型を確立（A4 1枚）', status: 'wip', owner: '多川さん／加藤', note: '6/12定例で型を1本その場で作成。数字・AIで分かったこと3つ・来月やること1つ・先月の結果の4ブロック。NotebookLMの分析を"成果物・判断・実績ログ"に変換し、毎月1本の運用に乗せる' },
+                    { name: '月次レポート下書き専用Gemの構築', status: 'wip', owner: '多川さん', note: '6/12定例で一緒に作成。来店データ＋アンケートを知識ベースに、レポート下書きをボタン一つで生成。投げるプロンプト集（定型／深掘り／直し方の3層）も整備済み' },
+                    { name: 'Gem（カスタムAI）の業務導入', status: 'wip', owner: '多川さん', note: '5/13実演：プロンプト＋知識ベースを埋め込んだカスタムAIをマーケ・顧客管理・クレーム対応 等で活用。まずは月次レポート下書きGemから定着させる' },
                     { name: 'カルテ画像→NotebookLMでテキスト化', status: 'wip', owner: '両者', note: '5/16店舗訪問で実カルテを使った精度検証デモ実施予定。プロンプトA/B/C準備済み' },
                     { name: '音声入力によるカルテ記入（iPad / PLAUD / Otter.ai）', status: 'hold', owner: '多川さん', note: '4/14：施術中入力が非現実的のため保留。Phase1の音声カルテと合流させる可能性あり' },
                     { name: 'Instagram 集客動線設計（フォロワー→来店）', status: 'wip', owner: '両者', note: '投稿再開・LINEとの連携検討中' },
@@ -513,12 +519,12 @@
 
         // --- ネクストアクション ---
         const nextActions = [
-            { priority: '高', text: '来店ログ＋来店管理シートのテンプレを実顧客で運用開始（5/16訪問で初期セットアップ伴走予定）', who: '多川さん', by: '6/12まで' },
-            { priority: '高', text: '蓄積アンケート（26〜183件）をCSV→PDF→NotebookLM分析、結果を6月打ち合わせで共有', who: '多川さん', by: '6/12まで' },
-            { priority: '中', text: 'Gem機能を試用、業務用カスタムAIを1つ以上作成（マーケ／顧客管理／クレーム対応 等）', who: '多川さん', by: '6/12まで' },
-            { priority: '中', text: '紙カルテOCR試行（4月宿題持ち越し・5/16訪問でNotebookLMデモ実施予定）', who: '両者', by: '6/12まで' },
-            { priority: '中', text: '香川訪問・現地での運用伴走（来店管理シート初期セットアップ＋カルテOCRデモ）', who: '加藤', by: '5/16（土）' },
-            { priority: '中', text: '共有サイトGitHub Pages版URLを院長へ案内（Google Sites版は権限エラーのため）', who: '加藤', by: '完了' },
+            { priority: '高', text: '6/12定例で「経営ひとことレポート」の型を1本その場で完成（加藤ドライブ→多川さんが再現）', who: '両者', by: '6/12（本日）' },
+            { priority: '高', text: '月次レポート下書き専用Gemを作成し、来店データ＋アンケートを知識ベース化', who: '多川さん', by: '6/12〜' },
+            { priority: '高', text: '毎月この型で経営レポートを1本出す運用に乗せる（蓄積＝多川さんのAI活用実績ログ）', who: '多川さん', by: '毎月' },
+            { priority: '中', text: '来店管理シートを実顧客で運用継続・経過日数／ステータス自動判定の動作を確認', who: '多川さん', by: '継続' },
+            { priority: '中', text: 'アンケートに分析に効く観点（顧客キー・満足度の要素分解・流入経路）を反映しGoogleフォーム化', who: '多川さん', by: '次回まで' },
+            { priority: '低', text: '紙カルテOCR試行（優先度低のまま・余力があれば）', who: '両者', by: '随時' },
             { priority: '低', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '顧客管理シート運用安定後' },
         ];
 
