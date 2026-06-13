@@ -242,11 +242,11 @@
         <!-- KPIサマリー -->
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
-                <div class="text-3xl font-bold text-green-600">7</div>
+                <div class="text-3xl font-bold text-green-600">9</div>
                 <div class="text-xs text-slate-500 mt-1">完了タスク</div>
             </div>
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
-                <div class="text-3xl font-bold text-blue-600">5</div>
+                <div class="text-3xl font-bold text-blue-600">6</div>
                 <div class="text-xs text-slate-500 mt-1">進行中</div>
             </div>
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
@@ -256,9 +256,9 @@
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
                 <div class="text-xs text-slate-500 mb-1">全体進捗</div>
                 <div class="w-full bg-slate-100 rounded-full h-3 mt-1">
-                    <div class="bg-teal-500 h-3 rounded-full progress-bar" style="width: 50%"></div>
+                    <div class="bg-teal-500 h-3 rounded-full progress-bar" style="width: 60%"></div>
                 </div>
-                <div class="text-xs font-bold text-teal-700 mt-1">50%</div>
+                <div class="text-xs font-bold text-teal-700 mt-1">60%</div>
             </div>
         </section>
 
@@ -323,7 +323,7 @@
                 </div>
                 <div class="bg-slate-50 rounded-lg p-3">
                     <div class="text-xs text-slate-400 mb-1">課題</div>
-                    <div class="font-semibold text-xs">院長疲弊・新規獲得停滞</div>
+                    <div class="font-semibold text-xs">代表の負担・新規獲得停滞</div>
                 </div>
             </div>
         </section>
@@ -336,15 +336,15 @@
             <div class="bg-white rounded-lg border border-slate-200 p-4 text-sm text-slate-600 space-y-2">
                 <div class="flex gap-3">
                     <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-06-12</span>
-                    <span>6/12 AI定例（多川さん単独）に向け加藤側準備完了。NotebookLMデモ用サンプルデータ（来店ログ・顧客マスタ・来店アンケート）、月次「経営ひとことレポート」の型、月次レポート下書き専用Gemの設計、既存アンケートに足す観点メモを整備。当日は「分析した」で終わらせず、成果物の型を1本その場で作り、毎月回る運用に乗せる。</span>
+                    <span>6/12 AI定例（多川さん単独）実施。月次レポート下書きGem「月次レポート下書き係」を多川さんの環境でその場で作成・完走（NotebookLM連携）。経営ひとことレポートをドキュメントで毎月蓄積する運用に合意。ホットペッパーのキャッチコピー変更で集客反応が向上→施策の変更履歴を記録する体制づくりに合意。アンケートは185件蓄積、分析用NotebookLMの構築と手書き予約表のAI読み込みテストを次回までの宿題に。「分析した」で終わらせず型を完走させた回。次回7/10。</span>
                 </div>
                 <div class="flex gap-3">
                     <span class="text-xs font-mono bg-teal-100 text-teal-700 px-2 py-0.5 rounded shrink-0">2026-05-13</span>
-                    <span>打合せ⑤実施。来店ログ＋来店管理の2シート分離テンプレを共有・院長即合意。アンケート分析フロー（CSV→PDF→NotebookLM）確立。Gem機能を実演し業務組込合意。紙カルテOCRは5/16訪問へ持ち越し。次回6/12（金）12:00。</span>
+                    <span>打合せ⑤実施。来店ログ＋来店管理の2シート分離テンプレを共有・代表即合意。アンケート分析フロー（CSV→PDF→NotebookLM）確立。Gem機能を実演し業務組込合意。紙カルテOCRは5/16訪問へ持ち越し。次回6/12（金）12:00。</span>
                 </div>
                 <div class="flex gap-3">
                     <span class="text-xs font-mono bg-amber-100 text-amber-700 px-2 py-0.5 rounded shrink-0">2026-05-10</span>
-                    <span>5/13ミーティングに向けて加藤側準備完了。経過日数算出の数式テンプレ、NotebookLM経営分析向け質問例、紙カルテOCRプロンプト例、3ヶ月ロードマップ案を整備。週明けに院長へリマインド予定。</span>
+                    <span>5/13ミーティングに向けて加藤側準備完了。経過日数算出の数式テンプレ、NotebookLM経営分析向け質問例、紙カルテOCRプロンプト例、3ヶ月ロードマップ案を整備。週明けに代表へリマインド予定。</span>
                 </div>
                 <div class="flex gap-3">
                     <span class="text-xs font-mono bg-teal-100 text-teal-700 px-2 py-0.5 rounded shrink-0">2026-04-14</span>
@@ -457,12 +457,15 @@
                 phaseColor: 'text-blue-700 bg-blue-50 border-blue-200',
                 items: [
                     { name: '顧客情報一元管理シートの作成', status: 'done', owner: '多川さん', note: '回数・支払い・提案時期・プリカ残高・治療計画・顧客情報を一元化。新規顧客から運用開始済み（3月〜）' },
-                    { name: '来店管理シート設計（ログ/管理の2分離・経過日数自動算出）', status: 'done', owner: '多川さん／加藤', note: '5/13合意：来店ログと来店管理を2シートに分離。経過日数・理想ペース比較・アプローチ要否を自動判定するテンプレを加藤が共有済み。院長は実顧客で運用開始予定（6/12まで）' },
+                    { name: '来店管理シート設計（ログ/管理の2分離・経過日数自動算出）', status: 'done', owner: '多川さん／加藤', note: '5/13合意：来店ログと来店管理を2シートに分離。経過日数・理想ペース比較・アプローチ要否を自動判定するテンプレを加藤が共有済み。代表は実顧客で運用開始予定（6/12まで）' },
                     { name: '顧客満足度アンケートの分析フロー確立', status: 'done', owner: '多川さん', note: '5/13合意：26〜183件のアンケートを「フォーム→CSV→PDF→NotebookLM」で分析するフロー確定。マーケ・商品開発・継続率向上に活用' },
                     { name: 'NotebookLMでの経営分析（顧客属性・稼働実績・視点の補完）', status: 'done', owner: '多川さん', note: '5/13確認：日常業務で活用中。「持っていない視点を得て意思決定の確信を強める」用途で定着。月次PDFを投入する運用が回っている' },
-                    { name: '月次「経営ひとことレポート」の型を確立（A4 1枚）', status: 'wip', owner: '多川さん／加藤', note: '6/12定例で型を1本その場で作成。数字・AIで分かったこと3つ・来月やること1つ・先月の結果の4ブロック。NotebookLMの分析を"成果物・判断・実績ログ"に変換し、毎月1本の運用に乗せる' },
-                    { name: '月次レポート下書き専用Gemの構築', status: 'wip', owner: '多川さん', note: '6/12定例で一緒に作成。来店データ＋アンケートを知識ベースに、レポート下書きをボタン一つで生成。投げるプロンプト集（定型／深掘り／直し方の3層）も整備済み' },
+                    { name: '月次「経営ひとことレポート」の型を確立（A4 1枚）', status: 'done', owner: '多川さん／加藤', note: '6/12定例で型を確立。経営ひとことレポートをGoogleドキュメントで毎月蓄積する運用に合意（月ごとにタブ追加）。残りは毎月1本を継続記入していく運用フェーズ' },
+                    { name: '月次レポート下書き専用Gemの構築', status: 'done', owner: '多川さん', note: '6/12定例で多川さんの環境にGem「月次レポート下書き係」を新規作成・完走。知識ベースにNotebookLMを連携。プロンプト集（定型／深掘り／直し方の3層）も共有済み。次は毎月の運用定着フォロー' },
                     { name: 'Gem（カスタムAI）の業務導入', status: 'wip', owner: '多川さん', note: '5/13実演：プロンプト＋知識ベースを埋め込んだカスタムAIをマーケ・顧客管理・クレーム対応 等で活用。まずは月次レポート下書きGemから定着させる' },
+                    { name: 'アンケート分析用NotebookLBの構築', status: 'wip', owner: '多川さん', note: '6/12定例で宿題化：185件蓄積したアンケートを集約した分析専用NotebookLMを別途作成。分析に必要なソースのみに絞って投入し、顧客ニーズの把握精度を上げる' },
+                    { name: '広告・キャッチコピーの変更履歴の記録', status: 'wip', owner: '多川さん', note: '6/12定例で合意：ホットペッパー等の広告・キャッチコピーの変更履歴をGoogleドキュメントに蓄積。変更前後で反応がどう変わったかの共通点を検証できる体制にする' },
+                    { name: '手書き予約表のAI読み込みテスト', status: 'wip', owner: '多川さん', note: '6/12定例で宿題化：手書き予約表（PDF）をGeminiで読み解けるかテスト。読めなければ読み込みやすい形式への加工をGeminiに相談' },
                     { name: 'カルテ画像→NotebookLMでテキスト化', status: 'wip', owner: '両者', note: '5/16店舗訪問で実カルテを使った精度検証デモ実施予定。プロンプトA/B/C準備済み' },
                     { name: '音声入力によるカルテ記入（iPad / PLAUD / Otter.ai）', status: 'hold', owner: '多川さん', note: '4/14：施術中入力が非現実的のため保留。Phase1の音声カルテと合流させる可能性あり' },
                     { name: 'Instagram 集客動線設計（フォロワー→来店）', status: 'wip', owner: '両者', note: '投稿再開・LINEとの連携検討中' },
@@ -519,12 +522,12 @@
 
         // --- ネクストアクション ---
         const nextActions = [
-            { priority: '高', text: '6/12定例で「経営ひとことレポート」の型を1本その場で完成（加藤ドライブ→多川さんが再現）', who: '両者', by: '6/12（本日）' },
-            { priority: '高', text: '月次レポート下書き専用Gemを作成し、来店データ＋アンケートを知識ベース化', who: '多川さん', by: '6/12〜' },
-            { priority: '高', text: '毎月この型で経営レポートを1本出す運用に乗せる（蓄積＝多川さんのAI活用実績ログ）', who: '多川さん', by: '毎月' },
+            { priority: '高', text: '月次レポートGemで「経営ひとことレポート」を毎月1本作成し、ドキュメントに蓄積（＝AI活用実績ログ）', who: '多川さん', by: '毎月／7/10まで1本' },
+            { priority: '高', text: 'アンケート185件を集約した分析専用NotebookLMを構築（必要なソースのみ投入）', who: '多川さん', by: '7/10まで' },
+            { priority: '中', text: '広告・キャッチコピーの変更履歴をGoogleドキュメントに記録開始（前後の反応を検証）', who: '多川さん', by: '随時' },
+            { priority: '中', text: '手書き予約表（PDF）のAI読み込みテスト。読めなければ読み込みやすい形式をGeminiに相談', who: '多川さん', by: '7/10まで' },
             { priority: '中', text: '来店管理シートを実顧客で運用継続・経過日数／ステータス自動判定の動作を確認', who: '多川さん', by: '継続' },
-            { priority: '中', text: 'アンケートに分析に効く観点（顧客キー・満足度の要素分解・流入経路）を反映しGoogleフォーム化', who: '多川さん', by: '次回まで' },
-            { priority: '低', text: '紙カルテOCR試行（優先度低のまま・余力があれば）', who: '両者', by: '随時' },
+            { priority: '低', text: '効率化の数値化（AI導入前後の短縮時間ログ）の型を一度提示', who: '加藤', by: '7/10' },
             { priority: '低', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '顧客管理シート運用安定後' },
         ];
 
@@ -547,13 +550,19 @@
 
         // ★ 毎月更新：次回ミーティング情報
         const nextMeeting = {
-            date: '2026-06-12',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
+            date: '2026-07-10',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
             time: '12:00',                 // ← 要更新：開始時間
             meetUrl: 'https://meet.google.com/qnf-bmpc-iem',  // ← 要更新：Google Meet URL（同じ定期Meet URL）
         };
 
         // ★ 打合せ後に追加：録画URL（Googleドライブ等）
         const meetings = [
+            {
+                date: '2026-06-12',
+                summary: '打合せ⑥：月次レポート下書きGem「月次レポート下書き係」を多川さんの環境でその場で作成・完走（NotebookLM連携）。経営ひとことレポートをドキュメントで毎月蓄積する運用に合意。ホットペッパーのキャッチコピー変更で反応向上→施策の変更履歴を記録する体制づくりに合意。手書き予約表のAI読み込みは次回までにテスト。次回7/10。',
+                recordingUrl: null,
+                tldvUrl: 'https://docs.google.com/document/d/1lHqEnvmg2cw4zcTpBs-GEIFxUgn0kKloEAL-XnMXgR4/edit',
+            },
             {
                 date: '2026-05-13',
                 summary: '打合せ⑤：来店ログ＋来店管理シートの2分離方式に移行・アンケート分析フロー（CSV→PDF→NotebookLM）確立・Gem導入実演・5/16店舗訪問予定・次回6/12',
