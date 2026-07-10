@@ -246,7 +246,7 @@
                 <div class="text-xs text-slate-500 mt-1">完了タスク</div>
             </div>
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
-                <div class="text-3xl font-bold text-blue-600">6</div>
+                <div class="text-3xl font-bold text-blue-600">8</div>
                 <div class="text-xs text-slate-500 mt-1">進行中</div>
             </div>
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
@@ -256,9 +256,9 @@
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
                 <div class="text-xs text-slate-500 mb-1">全体進捗</div>
                 <div class="w-full bg-slate-100 rounded-full h-3 mt-1">
-                    <div class="bg-teal-500 h-3 rounded-full progress-bar" style="width: 60%"></div>
+                    <div class="bg-teal-500 h-3 rounded-full progress-bar" style="width: 65%"></div>
                 </div>
-                <div class="text-xs font-bold text-teal-700 mt-1">60%</div>
+                <div class="text-xs font-bold text-teal-700 mt-1">65%</div>
             </div>
         </section>
 
@@ -335,7 +335,11 @@
             </h2>
             <div class="bg-white rounded-lg border border-slate-200 p-4 text-sm text-slate-600 space-y-2">
                 <div class="flex gap-3">
-                    <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-06-12</span>
+                    <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-07-10</span>
+                    <span>7/10 AI定例（今期最終回）実施。多川さんのマーケティング責任者就任を確認し、8月以降は「加藤＝データ構築の仕組み提供／多川さん＝施策実行」の半自動運用へ移行することで合意。Excel→スプレッドシート変換でNotebookLMの自動連携（シート更新→ソース自動更新）をその場で確立。流入経路は ホットペッパー→HP→Instagram広告 の順と判明。半年間の成果（顧客一元化・アンケートデータ化・AI意思決定サポート）を総括し、多川さんも顧客管理基盤の整備を高評価。次回8/7（金）12:00。</span>
+                </div>
+                <div class="flex gap-3">
+                    <span class="text-xs font-mono bg-teal-100 text-teal-700 px-2 py-0.5 rounded shrink-0">2026-06-12</span>
                     <span>6/12 AI定例（多川さん単独）実施。月次レポート下書きGem「月次レポート下書き係」を多川さんの環境でその場で作成・完走（NotebookLM連携）。経営ひとことレポートをドキュメントで毎月蓄積する運用に合意。ホットペッパーのキャッチコピー変更で集客反応が向上→施策の変更履歴を記録する体制づくりに合意。アンケートは185件蓄積、分析用NotebookLMの構築と手書き予約表のAI読み込みテストを次回までの宿題に。「分析した」で終わらせず型を完走させた回。次回7/10。</span>
                 </div>
                 <div class="flex gap-3">
@@ -473,9 +477,12 @@
             },
             // Phase 3 予定
             {
-                phase: 'Phase 3 ： 自動化・集客強化',
+                phase: 'Phase 3 ： 自動化・集客強化（8月〜 半自動運用体制）',
                 phaseColor: 'text-slate-600 bg-slate-50 border-slate-200',
                 items: [
+                    { name: '販促ルート別データ集計基盤の構築（半自動運用）', status: 'wip', owner: '加藤', note: '7/10合意：加藤がデータ構築の仕組みを提供し、多川さんが施策を実行する体制へ。媒体別集計＋月次サマリー自動生成の基盤（GAS）を構築。流入経路の主力＝ホットペッパー→HP→Instagram広告' },
+                    { name: 'データの安全な連携方法の設計（バックアップ・権限管理）', status: 'wip', owner: '加藤', note: '7/10で多川さんからデータ消失リスクへの懸念。安全な共有・バックアップ・権限管理を含む構築案を8/7に提示' },
+                    { name: '来店表・予約表のスプレッドシート化（NotebookLM自動連携）', status: 'wip', owner: '多川さん', note: '7/10確立：Excel→Googleスプレッドシート変換でNotebookLMのソースが自動更新される連携が完成。残りのファイルを変換していく' },
                     { name: '再検査フォローアップ 自動化（Apps Script）', status: 'plan', owner: '加藤', note: '3ヶ月後の顧客に自動LINE送信' },
                     { name: '予約管理 自動化（Google スプレッドシート連携）', status: 'plan', owner: '加藤', note: 'ホットペッパー・LINE予約を一元化' },
                     { name: '訪問神経マッサージ 営業動画制作', status: 'plan', owner: '多川さん', note: 'ケアマネージャー向け・70秒+詳細版' },
@@ -522,13 +529,13 @@
 
         // --- ネクストアクション ---
         const nextActions = [
-            { priority: '高', text: '月次レポートGemで「経営ひとことレポート」を毎月1本作成し、ドキュメントに蓄積（＝AI活用実績ログ）', who: '多川さん', by: '毎月／7/10まで1本' },
-            { priority: '高', text: 'アンケート185件を集約した分析専用NotebookLMを構築（必要なソースのみ投入）', who: '多川さん', by: '7/10まで' },
-            { priority: '中', text: '広告・キャッチコピーの変更履歴をGoogleドキュメントに記録開始（前後の反応を検証）', who: '多川さん', by: '随時' },
-            { priority: '中', text: '手書き予約表（PDF）のAI読み込みテスト。読めなければ読み込みやすい形式をGeminiに相談', who: '多川さん', by: '7/10まで' },
-            { priority: '中', text: '来店管理シートを実顧客で運用継続・経過日数／ステータス自動判定の動作を確認', who: '多川さん', by: '継続' },
-            { priority: '低', text: '効率化の数値化（AI導入前後の短縮時間ログ）の型を一度提示', who: '加藤', by: '7/10' },
-            { priority: '低', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '顧客管理シート運用安定後' },
+            { priority: '高', text: '媒体別集計＋月次サマリー自動生成の基盤（自動プログラム）を構築', who: '加藤', by: '8月〜' },
+            { priority: '高', text: 'データを安全に連携する構築案（バックアップ・権限管理含む）を提示', who: '加藤', by: '8/7' },
+            { priority: '高', text: '今月の新規来店数・獲得単価・集客目標の数値を整理して共有', who: '多川さん', by: '8/7まで' },
+            { priority: '高', text: '来店表・予約表をGoogleスプレッドシート形式に変換（NotebookLM自動連携）', who: '多川さん', by: '8/7まで' },
+            { priority: '中', text: '分析結果をGoogleドキュメントの月別タブに蓄積（振り返り用の継続記録）', who: '多川さん', by: '毎月' },
+            { priority: '中', text: 'マーケ・AI活用の取り組みと成果をチーム内に共有（組織への浸透）', who: '多川さん', by: '随時' },
+            { priority: '低', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '基盤構築後' },
         ];
 
         const priorityColor = { '高': 'bg-red-100 text-red-700', '中': 'bg-amber-100 text-amber-700', '低': 'bg-slate-100 text-slate-500' };
@@ -550,13 +557,19 @@
 
         // ★ 毎月更新：次回ミーティング情報
         const nextMeeting = {
-            date: '2026-07-10',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
+            date: '2026-08-07',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
             time: '12:00',                 // ← 要更新：開始時間
             meetUrl: 'https://meet.google.com/qnf-bmpc-iem',  // ← 要更新：Google Meet URL（同じ定期Meet URL）
         };
 
         // ★ 打合せ後に追加：録画URL（Googleドライブ等）
         const meetings = [
+            {
+                date: '2026-07-10',
+                summary: '打合せ⑦（今期最終回）：多川さんのマーケティング責任者就任を確認。8月以降は「加藤＝データ構築の仕組み提供／多川さん＝施策実行」の半自動運用へ移行合意。Excel→スプレッドシート変換でNotebookLM自動連携を確立。流入経路の主力はホットペッパー→HP→Instagram広告。半年間の成果を総括。次回8/7。',
+                recordingUrl: null,
+                tldvUrl: 'https://docs.google.com/document/d/1tuE9t_uaiV2CLvyNFnrhffJ3z7G-7oxl6DhBVYRofEc/edit',
+            },
             {
                 date: '2026-06-12',
                 summary: '打合せ⑥：月次レポート下書きGem「月次レポート下書き係」を多川さんの環境でその場で作成・完走（NotebookLM連携）。経営ひとことレポートをドキュメントで毎月蓄積する運用に合意。ホットペッパーのキャッチコピー変更で反応向上→施策の変更履歴を記録する体制づくりに合意。手書き予約表のAI読み込みは次回までにテスト。次回7/10。',
