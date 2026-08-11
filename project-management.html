@@ -242,11 +242,11 @@
         <!-- KPIサマリー -->
         <section class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
-                <div class="text-3xl font-bold text-green-600">9</div>
+                <div class="text-3xl font-bold text-green-600">11</div>
                 <div class="text-xs text-slate-500 mt-1">完了タスク</div>
             </div>
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
-                <div class="text-3xl font-bold text-blue-600">8</div>
+                <div class="text-3xl font-bold text-blue-600">7</div>
                 <div class="text-xs text-slate-500 mt-1">進行中</div>
             </div>
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
@@ -256,9 +256,9 @@
             <div class="bg-white rounded-xl border border-slate-200 p-4 text-center shadow-sm">
                 <div class="text-xs text-slate-500 mb-1">全体進捗</div>
                 <div class="w-full bg-slate-100 rounded-full h-3 mt-1">
-                    <div class="bg-teal-500 h-3 rounded-full progress-bar" style="width: 65%"></div>
+                    <div class="bg-teal-500 h-3 rounded-full progress-bar" style="width: 72%"></div>
                 </div>
-                <div class="text-xs font-bold text-teal-700 mt-1">65%</div>
+                <div class="text-xs font-bold text-teal-700 mt-1">72%</div>
             </div>
         </section>
 
@@ -335,7 +335,11 @@
             </h2>
             <div class="bg-white rounded-lg border border-slate-200 p-4 text-sm text-slate-600 space-y-2">
                 <div class="flex gap-3">
-                    <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-07-10</span>
+                    <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-08-11</span>
+                    <span>8/11 AI定例実施。7月経営レポートを確認し新規+16名・成約率2.6倍超と好調（主因はMeta広告導入＋HP経由LINE予約増）。販促データ基盤を来院表に設置完了し、氏名を除外した「集計用ミラー」を自動生成する仕組みが実データで稼働（顧客番号・担当は残す）。ミラー更新は多川さんが月1回手動で実施、加藤はミラーから媒体別集計・月次サマリーを回す運用に。経営レポートの振り返りを定例冒頭のルーチンにすることで合意。次回9/11（木）12:00。</span>
+                </div>
+                <div class="flex gap-3">
+                    <span class="text-xs font-mono bg-teal-100 text-teal-700 px-2 py-0.5 rounded shrink-0">2026-07-10</span>
                     <span>7/10 AI定例（今期最終回）実施。多川さんのマーケティング責任者就任を確認し、8月以降は「加藤＝データ構築の仕組み提供／多川さん＝施策実行」の半自動運用へ移行することで合意。Excel→スプレッドシート変換でNotebookLMの自動連携（シート更新→ソース自動更新）をその場で確立。流入経路は ホットペッパー→HP→Instagram広告 の順と判明。半年間の成果（顧客一元化・アンケートデータ化・AI意思決定サポート）を総括し、多川さんも顧客管理基盤の整備を高評価。次回8/7（金）12:00。</span>
                 </div>
                 <div class="flex gap-3">
@@ -480,9 +484,9 @@
                 phase: 'Phase 3 ： 自動化・集客強化（8月〜 半自動運用体制）',
                 phaseColor: 'text-slate-600 bg-slate-50 border-slate-200',
                 items: [
-                    { name: '販促ルート別データ集計基盤の構築（半自動運用）', status: 'wip', owner: '加藤', note: '7/10合意：加藤がデータ構築の仕組みを提供し、多川さんが施策を実行する体制へ。媒体別集計＋月次サマリー自動生成の基盤（GAS）を構築。流入経路の主力＝ホットペッパー→HP→Instagram広告' },
-                    { name: 'データの安全な連携方法の設計（バックアップ・権限管理）', status: 'wip', owner: '加藤', note: '7/10で多川さんからデータ消失リスクへの懸念。安全な共有・バックアップ・権限管理を含む構築案を8/7に提示' },
-                    { name: '来店表・予約表のスプレッドシート化（NotebookLM自動連携）', status: 'wip', owner: '多川さん', note: '7/10確立：Excel→Googleスプレッドシート変換でNotebookLMのソースが自動更新される連携が完成。残りのファイルを変換していく' },
+                    { name: '販促データ基盤（匿名化ミラー）を来院表に設置', status: 'done', owner: '加藤／多川さん', note: '8/11設置完了。来院表からGASが氏名を除外した「集計用ミラー」を自動生成。実データで稼働確認（顧客番号・担当は残す）。更新は多川さんが月1回手動' },
+                    { name: '媒体別集計・月次サマリーの構築（加藤側）', status: 'wip', owner: '加藤', note: '8/11：ミラーを入力に、月×予約経路の新規件数・成約率・前月比＋月次サマリーを出すGASを作成。加藤側スプレッドシートで運用し、出力をNotebookLM／月次レポートGemに接続' },
+                    { name: 'データの安全な連携（個人情報を出さない設計）', status: 'done', owner: '加藤', note: '匿名化ミラー方式で解決。氏名は加藤に共有されず、加藤はミラーのみ閲覧。日次スナップショットでバックアップも可能' },
                     { name: '再検査フォローアップ 自動化（Apps Script）', status: 'plan', owner: '加藤', note: '3ヶ月後の顧客に自動LINE送信' },
                     { name: '予約管理 自動化（Google スプレッドシート連携）', status: 'plan', owner: '加藤', note: 'ホットペッパー・LINE予約を一元化' },
                     { name: '訪問神経マッサージ 営業動画制作', status: 'plan', owner: '多川さん', note: 'ケアマネージャー向け・70秒+詳細版' },
@@ -529,13 +533,13 @@
 
         // --- ネクストアクション ---
         const nextActions = [
-            { priority: '高', text: '媒体別集計＋月次サマリー自動生成の基盤（自動プログラム）を構築', who: '加藤', by: '8月〜' },
-            { priority: '高', text: 'データを安全に連携する構築案（バックアップ・権限管理含む）を提示', who: '加藤', by: '8/7' },
-            { priority: '高', text: '今月の新規来店数・獲得単価・集客目標の数値を整理して共有', who: '多川さん', by: '8/7まで' },
-            { priority: '高', text: '来店表・予約表をGoogleスプレッドシート形式に変換（NotebookLM自動連携）', who: '多川さん', by: '8/7まで' },
-            { priority: '中', text: '分析結果をGoogleドキュメントの月別タブに蓄積（振り返り用の継続記録）', who: '多川さん', by: '毎月' },
+            { priority: '高', text: '加藤側の集計（媒体別・月次サマリー）を稼働し、出力をNotebookLM／月次レポートGemに接続', who: '加藤', by: '9/11まで' },
+            { priority: '高', text: '月1回、締めに合わせて「今すぐミラー更新」を押してミラーを更新', who: '多川さん', by: '毎月' },
+            { priority: '中', text: '新規集客が大きく伸びた理由をGemに分析させる', who: '多川さん', by: '随時' },
+            { priority: '中', text: '経営レポートの振り返りを毎回の定例冒頭で実施（ルーチン化）', who: '両者', by: '毎月' },
+            { priority: '中', text: '来店表の見出しを1行目に整備・スクリプトのシート名を実物に合わせて確認', who: '多川さん', by: '9/11まで' },
             { priority: '中', text: 'マーケ・AI活用の取り組みと成果をチーム内に共有（組織への浸透）', who: '多川さん', by: '随時' },
-            { priority: '低', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '基盤構築後' },
+            { priority: '低', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '基盤運用が安定後' },
         ];
 
         const priorityColor = { '高': 'bg-red-100 text-red-700', '中': 'bg-amber-100 text-amber-700', '低': 'bg-slate-100 text-slate-500' };
@@ -557,13 +561,19 @@
 
         // ★ 毎月更新：次回ミーティング情報
         const nextMeeting = {
-            date: '2026-08-07',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
+            date: '2026-09-11',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
             time: '12:00',                 // ← 要更新：開始時間
             meetUrl: 'https://meet.google.com/qnf-bmpc-iem',  // ← 要更新：Google Meet URL（同じ定期Meet URL）
         };
 
         // ★ 打合せ後に追加：録画URL（Googleドライブ等）
         const meetings = [
+            {
+                date: '2026-08-11',
+                summary: '打合せ⑧：7月経営レポートを確認（新規+16名・成約率2.6倍超と好調、主因はMeta広告導入＋HP経由LINE予約増）。販促データ基盤を来院表に設置完了＝氏名を除外した集計用ミラーを自動生成（顧客番号・担当は残す）。ミラー更新は月1回手動運用に決定。経営レポート振り返りを定例冒頭のルーチン化で合意。次回9/11。',
+                recordingUrl: null,
+                tldvUrl: 'https://docs.google.com/document/d/1ujJlH3pGDIHlz4mYf-FxUp5kx7lpjOf0xQy4x2rBEgU/edit',
+            },
             {
                 date: '2026-07-10',
                 summary: '打合せ⑦（今期最終回）：多川さんのマーケティング責任者就任を確認。8月以降は「加藤＝データ構築の仕組み提供／多川さん＝施策実行」の半自動運用へ移行合意。Excel→スプレッドシート変換でNotebookLM自動連携を確立。流入経路の主力はホットペッパー→HP→Instagram広告。半年間の成果を総括。次回8/7。',
