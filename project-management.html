@@ -335,7 +335,11 @@
             </h2>
             <div class="bg-white rounded-lg border border-slate-200 p-4 text-sm text-slate-600 space-y-2">
                 <div class="flex gap-3">
-                    <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-08-11</span>
+                    <span class="text-xs font-mono bg-rose-100 text-rose-700 px-2 py-0.5 rounded shrink-0">2026-09-18</span>
+                    <span>9/18 AI定例実施。8月は新規好調だが、課題は成約率と会員移行率（移行率10%前後）＝入口で問題意識の低い層を呼んでいる可能性。今後は媒体×クーポン×検索ワード×性別で細かくデータを取り、ボリュームゾーンにコストを寄せる方針。Meta広告は運用見直し、美容はアンケート30件で強み・ターゲットを特定。販促データ基盤は稼働し、月別ファイルは1つに継続蓄積と判明→手動統合は不要に。集計からAIダッシュボードを自動作成する機能も確認。集計＝媒体の材料／経営一言レポート＝総合所見、と役割を整理。次回10/16（金）12:00。</span>
+                </div>
+                <div class="flex gap-3">
+                    <span class="text-xs font-mono bg-teal-100 text-teal-700 px-2 py-0.5 rounded shrink-0">2026-08-11</span>
                     <span>8/11 AI定例実施。7月経営レポートを確認し新規+16名・成約率2.6倍超と好調（主因はMeta広告導入＋HP経由LINE予約増）。販促データ基盤を来院表に設置完了し、氏名を除外した「集計用ミラー」を自動生成する仕組みが実データで稼働（顧客番号・担当は残す）。ミラー更新は多川さんが月1回手動で実施、加藤はミラーから媒体別集計・月次サマリーを回す運用に。経営レポートの振り返りを定例冒頭のルーチンにすることで合意。次回9/11（木）12:00。</span>
                 </div>
                 <div class="flex gap-3">
@@ -533,13 +537,14 @@
 
         // --- ネクストアクション ---
         const nextActions = [
-            { priority: '高', text: '加藤側の集計（媒体別・月次サマリー）を稼働し、出力をNotebookLM／月次レポートGemに接続', who: '加藤', by: '9/11まで' },
-            { priority: '高', text: '月1回、締めに合わせて「今すぐミラー更新」を押してミラーを更新', who: '多川さん', by: '毎月' },
-            { priority: '中', text: '新規集客が大きく伸びた理由をGemに分析させる', who: '多川さん', by: '随時' },
-            { priority: '中', text: '経営レポートの振り返りを毎回の定例冒頭で実施（ルーチン化）', who: '両者', by: '毎月' },
-            { priority: '中', text: '来店表の見出しを1行目に整備・スクリプトのシート名を実物に合わせて確認', who: '多川さん', by: '9/11まで' },
-            { priority: '中', text: 'マーケ・AI活用の取り組みと成果をチーム内に共有（組織への浸透）', who: '多川さん', by: '随時' },
-            { priority: '低', text: 'Apps Script 再検査フォローアップ 実装', who: '加藤', by: '基盤運用が安定後' },
+            { priority: '高', text: '美容の顧客アンケートを約30件収集→院の強み・ターゲットを特定しキャッチコピーに反映', who: '多川さん', by: '10/16まで' },
+            { priority: '高', text: '集客データを媒体×クーポン×検索ワード×性別で整理→ボリュームゾーンにコスト集中', who: '多川さん', by: '10/16まで' },
+            { priority: '高', text: '成約率の低いMeta広告の運用手法を見直す', who: '多川さん', by: '継続' },
+            { priority: '中', text: '集計スプレッドシートに8月分を反映し媒体別分析を完了（入力元ミラーを新ミラーに統一）', who: '加藤', by: '9月中' },
+            { priority: '中', text: 'Googleトレンド等の検索分析ツール・Meta広告の新機能の情報を送付', who: '加藤', by: '随時' },
+            { priority: '中', text: '複数の顧客管理ファイルを1つに統合し自動反映する仕組みを構築（合意事項）', who: '加藤', by: '要相談' },
+            { priority: '中', text: 'HP・Googleビジネスプロフィールを症状/メニュー/口コミでAI検索に最適化', who: '多川さん', by: '継続' },
+            { priority: '低', text: '顧客リストから対象を抽出し来店促進アプローチ', who: '多川さん', by: '随時' },
         ];
 
         const priorityColor = { '高': 'bg-red-100 text-red-700', '中': 'bg-amber-100 text-amber-700', '低': 'bg-slate-100 text-slate-500' };
@@ -561,13 +566,19 @@
 
         // ★ 毎月更新：次回ミーティング情報
         const nextMeeting = {
-            date: '2026-09-18',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
+            date: '2026-10-16',           // ← 要更新：次の打合せ日（YYYY-MM-DD）
             time: '12:00',                 // ← 要更新：開始時間
             meetUrl: 'https://meet.google.com/qnf-bmpc-iem',  // ← 要更新：Google Meet URL（同じ定期Meet URL）
         };
 
         // ★ 打合せ後に追加：録画URL（Googleドライブ等）
         const meetings = [
+            {
+                date: '2026-09-18',
+                summary: '打合せ⑨：8月は新規好調も、課題は成約率・会員移行率（移行率10%前後）。媒体×クーポン×検索ワード×性別で細かく取り、効くところにコスト集中へ。Meta広告は手法見直し、美容はアンケート30件で強み特定。販促データ基盤は稼働、月別ファイルは1つに継続蓄積と判明し手動統合は不要。AIダッシュボード自動作成を紹介。集計＝媒体の材料／経営レポート＝総合所見、と役割整理。次回10/16。',
+                recordingUrl: null,
+                tldvUrl: 'https://docs.google.com/document/d/1dnzJA6qfH1TahN3bBdIXquUi7AlCpEOpYlfPQ5PmIJY/edit',
+            },
             {
                 date: '2026-08-11',
                 summary: '打合せ⑧：7月経営レポートを確認（新規+16名・成約率2.6倍超と好調、主因はMeta広告導入＋HP経由LINE予約増）。販促データ基盤を来院表に設置完了＝氏名を除外した集計用ミラーを自動生成（顧客番号・担当は残す）。ミラー更新は月1回手動運用に決定。経営レポート振り返りを定例冒頭のルーチン化で合意。次回9/11。',
